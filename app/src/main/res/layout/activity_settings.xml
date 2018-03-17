@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#332C56"
+    tools:context="com.example.redwan.firebasechatapp.SettingsActivity">
+
+<!--    <ImageView
+        android:id="@+id/setting_coverPic"
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:src="@drawable/avater_coverpic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/setting_image"
+        android:layout_width="210dp"
+        android:layout_height="195dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/avatar_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+<!--    <ImageView
+        android:id="@+id/setting_coverPicButton"
+        android:layout_width="38dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/coverpic_change"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <ImageView
+        android:id="@+id/setting_image"
+        android:layout_width="139dp"
+        android:layout_height="112dp"
+        android:layout_marginTop="136dp"
+        android:src="@drawable/avatar_default"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />-->
+
+
+    <TextView
+        android:id="@+id/setting_displayName"
+        android:layout_width="250dp"
+        android:layout_height="67dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:gravity="bottom|center"
+        android:text="Display Name"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_image" />
+
+    <TextView
+        android:id="@+id/setting_status"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/default_status"
+        android:textAlignment="center"
+        android:textColor="#929392"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_displayName" />
+
+    <Button
+        android:id="@+id/setting_changeImageButton"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:drawableLeft="@drawable/picture"
+        android:text="change image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_status" />
+
+    <Button
+        android:id="@+id/setting_changeStatusButton"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:drawableLeft="@drawable/notebook"
+        android:text="change status"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_changeImageButton"
+        app:layout_constraintVertical_bias="0.0" />
+
+</android.support.constraint.ConstraintLayout>

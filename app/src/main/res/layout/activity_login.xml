@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#332C56"
+    tools:context="com.example.redwan.firebasechatapp.LoginActivity">
+
+    <include
+        android:id="@+id/toolbarId_login"
+        layout="@layout/all_toolbar" />
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="22dp"
+
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="149dp"
+        android:src="@drawable/email_register"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="212dp"
+        android:src="@drawable/lock"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/email"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:textColorHint="#929392"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@android:color/white"
+            android:hint="Email Id"
+            android:inputType="text|textEmailAddress"
+            android:maxLines="1"
+            android:paddingLeft="55dp"
+            android:singleLine="true"
+            android:textColor="#929392"
+            android:textColorHint="#929392" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/pass"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="8dp"
+        android:gravity="left|center"
+        android:textColorHint="#929392"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@android:color/white"
+            android:hint="Password (At least 6 characters)"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingLeft="55dp"
+            android:singleLine="true"
+            android:textColor="#929392"
+            android:textColorHint="#929392" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:drawableLeft="@drawable/signin_button"
+        android:text="Sign In"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pass" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="283dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="24dp"
+        android:text="Login to your account"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarId_login" />
+
+</android.support.constraint.ConstraintLayout>
