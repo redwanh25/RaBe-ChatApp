@@ -6,4 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.redwan.firebasechatapp.ChatActivity">
 
+    <include layout="@layout/all_toolbar" android:id="@+id/toolbarId_chat" />
+
+
 </android.support.constraint.ConstraintLayout>

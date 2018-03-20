@@ -65,7 +65,10 @@
         <activity
             android:name=".ProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ChatActivity"></activity>
+        <activity
+            android:name=".ChatActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
