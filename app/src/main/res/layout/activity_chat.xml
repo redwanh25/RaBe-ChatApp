@@ -4,9 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#CCCCCC"
     tools:context="com.example.redwan.firebasechatapp.ChatActivity">
 
-    <include layout="@layout/all_toolbar" android:id="@+id/toolbarId_chat" />
+    <include
+        android:id="@+id/toolbarId_chat"
+        layout="@layout/all_toolbar" />
+
+    <TextView
+        android:id="@+id/chat_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:padding="12dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageButton2" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="60dp"
+        android:layout_height="53dp"
+        android:background="@color/cardview_light_background"
+        android:src="@drawable/sent_sms"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="60dp"
+        android:layout_height="53dp"
+        android:background="@color/cardview_light_background"
+        android:src="@drawable/add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
