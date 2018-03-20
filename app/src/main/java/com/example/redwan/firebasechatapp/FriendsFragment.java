@@ -2,8 +2,11 @@ package com.example.redwan.firebasechatapp;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -77,7 +80,7 @@ public class FriendsFragment extends Fragment {
 
                 viewHolder.setDate(model.getDate());
 
-                String userKey = getRef(position).getKey();
+                final String userKey = getRef(position).getKey();
 
                 userDatabase.child(userKey).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -92,6 +95,34 @@ public class FriendsFragment extends Fragment {
 
                         viewHolder.setName(name);
                         viewHolder.setImage(thumbPic, getContext());
+
+                        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                String[] option = {"Open Profile", "Send Message"};
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setTitle("Select Options");
+                                builder.setItems(option, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        if(which == 0) {
+                                            Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                                            profileIntent.putExtra("key", userKey);
+                                            startActivity(profileIntent);
+                                        }
+                                        else if(which == 1) {
+
+                                        }
+
+                                    }
+                                });
+                                builder.show();
+
+                            }
+                        });
                     }
 
                     @Override
