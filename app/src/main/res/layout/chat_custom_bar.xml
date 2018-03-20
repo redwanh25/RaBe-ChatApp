@@ -17,10 +17,11 @@
 
     <TextView
         android:id="@+id/chat_user_name"
-        android:layout_width="wrap_content"
+        android:layout_width="201dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="TextView"
+        android:maxLines="1"
+        android:text="Display Name"
         android:textSize="21sp"
         app:layout_constraintStart_toEndOf="@+id/chat_profile_pic"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="TextView"
+        android:text="online status"
         app:layout_constraintStart_toEndOf="@+id/chat_profile_pic"
         app:layout_constraintTop_toBottomOf="@+id/chat_user_name" />
 

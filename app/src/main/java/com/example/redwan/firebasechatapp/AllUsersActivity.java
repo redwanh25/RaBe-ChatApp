@@ -8,13 +8,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -61,12 +65,27 @@ public class AllUsersActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter <Users, UsersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
                 Users.class, R.layout.user_single_layout, UsersViewHolder.class, mDatabaseReference) {
             @Override
-            protected void populateViewHolder(UsersViewHolder viewHolder, Users model, int position) {
+            protected void populateViewHolder(final UsersViewHolder viewHolder, Users model, int position) {
                 viewHolder.setDisplayName(model.getName());
                 viewHolder.setUserStatus(model.getStatus());
                 viewHolder.set_thumbImage(model.getThumb_image(), getApplicationContext());
 
                 final String userKey = getRef(position).getKey();
+
+                mDatabaseReference.child(userKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChild("Online")) {
+                            Boolean pic = (boolean) dataSnapshot.child("Online").getValue();
+                            viewHolder.setOnlineStatus(pic);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -112,6 +131,18 @@ public class AllUsersActivity extends AppCompatActivity {
                     Picasso.with(cntx).load(thumb).placeholder(R.drawable.avatar_default).into(img);
                 }
             });
+        }
+
+        public void setOnlineStatus(Boolean pic) {
+            ImageView image = mView.findViewById(R.id.onLine);
+
+            if(pic.equals(true)) {
+                image.setVisibility(View.VISIBLE);
+            }
+            else {
+                image.setVisibility(View.INVISIBLE);
+            }
+
         }
     }
 
