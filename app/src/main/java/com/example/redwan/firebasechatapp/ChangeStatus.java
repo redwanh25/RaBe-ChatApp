@@ -27,6 +27,10 @@ public class ChangeStatus extends AppCompatActivity {
 
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabaseReference;
+
+    private DatabaseReference onlineDatabase;
+    private FirebaseUser current;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,9 @@ public class ChangeStatus extends AppCompatActivity {
 
         status = findViewById(R.id.ch_status);
         change = findViewById(R.id.ch_statusButton);
+
+        current = FirebaseAuth.getInstance().getCurrentUser();
+        onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,5 +76,17 @@ public class ChangeStatus extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onlineDatabase.setValue(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onlineDatabase.setValue(false);
     }
 }

@@ -11,6 +11,8 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionPagerAdapter;
     private TabLayout mTabLayout;
 
+    private DatabaseReference onlineDatabase;
+    private FirebaseUser current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,31 @@ public class MainActivity extends AppCompatActivity {
         if(currentUser == null) {
             setToStart();
         }
+        else {
+
+            // online -------------------------
+
+            current = FirebaseAuth.getInstance().getCurrentUser();
+            onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
+            onlineDatabase.setValue(true);
+        }
     }
+
+    // online -------------------------
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onlineDatabase.setValue(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onlineDatabase.setValue(false);
+    }
+
+    // online -------------------------
 
     private void setToStart(){
         Intent startIntent = new Intent(MainActivity.this, StartActivity.class);
@@ -76,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, DeleteAccountActivity.class));
         }
         else if(item.getItemId() == R.id.logout){
+            onlineDatabase.setValue(false);
             FirebaseAuth.getInstance().signOut();
             setToStart();
         }

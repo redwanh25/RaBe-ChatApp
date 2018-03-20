@@ -29,6 +29,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private DatabaseReference databaseReference;
 
+    private DatabaseReference onlineDatabase;
+    private FirebaseUser current;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+
+        current = FirebaseAuth.getInstance().getCurrentUser();
+        onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,5 +103,17 @@ public class DeleteAccountActivity extends AppCompatActivity {
 //                }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onlineDatabase.setValue(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onlineDatabase.setValue(false);
     }
 }

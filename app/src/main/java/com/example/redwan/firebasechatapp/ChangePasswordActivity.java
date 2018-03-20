@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -24,10 +26,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private ProgressDialog progressDialog;
 
+    private DatabaseReference onlineDatabase;
+    private FirebaseUser current;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+
         toolbar = findViewById(R.id.toolbar_changePass);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Change Password");
@@ -38,6 +44,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        current = FirebaseAuth.getInstance().getCurrentUser();
+        onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
 
         change_password_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +76,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        onlineDatabase.setValue(true);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        onlineDatabase.setValue(false);
     }
 }

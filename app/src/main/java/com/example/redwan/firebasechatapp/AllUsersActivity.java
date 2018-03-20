@@ -11,8 +11,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -22,6 +26,9 @@ public class AllUsersActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private DatabaseReference mDatabaseReference;
+
+    private DatabaseReference onlineDatabase;
+    private FirebaseUser current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +41,15 @@ public class AllUsersActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+//        mDatabaseReference.keepSynced(true);
 
         recyclerView = findViewById(R.id.all_Users_RecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        current = FirebaseAuth.getInstance().getCurrentUser();
+        onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
+
 
     }
 
@@ -59,7 +71,7 @@ public class AllUsersActivity extends AppCompatActivity {
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent profileIntent = new Intent(AllUsersActivity.this, Profile.class);
+                        Intent profileIntent = new Intent(AllUsersActivity.this, ProfileActivity.class);
                         profileIntent.putExtra("key", userKey);
                         startActivity(profileIntent);
                     }
@@ -85,9 +97,33 @@ public class AllUsersActivity extends AppCompatActivity {
             TextView mTextView = mView.findViewById(R.id.status_allUsers);
             mTextView.setText(status);
         }
-        public void set_thumbImage(String thumb, Context cntx) {
-            CircleImageView img = mView.findViewById(R.id.proPic_allUsers);
-            Picasso.with(cntx).load(thumb).placeholder(R.drawable.avatar_default).into(img);
+        public void set_thumbImage(final String thumb, final Context cntx) {
+            final CircleImageView img = mView.findViewById(R.id.proPic_allUsers);
+//          Picasso.with(cntx).load(thumb).placeholder(R.drawable.avatar_default).into(img);
+
+            Picasso.with(cntx).load(thumb).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(img, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
+                    Picasso.with(cntx).load(thumb).placeholder(R.drawable.avatar_default).into(img);
+                }
+            });
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onlineDatabase.setValue(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onlineDatabase.setValue(false);
     }
 }

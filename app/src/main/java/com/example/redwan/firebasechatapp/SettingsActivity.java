@@ -45,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseReference;
     private TextView display;
     private TextView c_status;
-//    private CircleImageView proPic;
+    //    private CircleImageView proPic;
     private ImageView proPic;
     private ImageView coverPic, coverPicButton;
     private Button changeStatus, changePic;
@@ -53,6 +53,9 @@ public class SettingsActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private ProgressDialog mProgressBar;
 //   private String pressed = "";
+
+    private DatabaseReference onlineDatabase;
+    private FirebaseUser current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,9 @@ public class SettingsActivity extends AppCompatActivity {
         changePic = findViewById(R.id.setting_changeImageButton);
 //        coverPic = findViewById(R.id.setting_coverPic);
 //        coverPicButton = findViewById(R.id.setting_coverPicButton);
+
+        current = FirebaseAuth.getInstance().getCurrentUser();
+        onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -155,94 +161,94 @@ public class SettingsActivity extends AppCompatActivity {
 
 //        if(pressed.equals("PROFILE PIC")){
 
-            if(requestCode == GALLERY_PIC && resultCode == RESULT_OK){
-                Uri imageUri = data.getData();
-                CropImage.activity(imageUri)
-                        .setAspectRatio(1, 1)       // setAspectRatio(1, 1) aita hosse pic k square kore crop korar jonno.
-               //         .setMinCropWindowSize(200, 200)       // ai line dile code crash kore
-                        .start(this);
-            }
+        if(requestCode == GALLERY_PIC && resultCode == RESULT_OK){
+            Uri imageUri = data.getData();
+            CropImage.activity(imageUri)
+                    .setAspectRatio(1, 1)       // setAspectRatio(1, 1) aita hosse pic k square kore crop korar jonno.
+                    //         .setMinCropWindowSize(200, 200)       // ai line dile code crash kore
+                    .start(this);
+        }
 
-            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-                if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
 
-                    mProgressBar.setTitle("Uploading Image");
-                    mProgressBar.setMessage("Please wait while we uploading the image and process...");
-                    mProgressBar.setCanceledOnTouchOutside(false);
-                    mProgressBar.show();
+                mProgressBar.setTitle("Uploading Image");
+                mProgressBar.setMessage("Please wait while we uploading the image and process...");
+                mProgressBar.setCanceledOnTouchOutside(false);
+                mProgressBar.show();
 
-                    Uri resultUri = result.getUri();  // finally jei pic ta gallery theke crop kore processing hoye ashlo shei pic er Uri. aita akhun upload hobe.
-                    String uId = mFireBaseUser.getUid();
+                Uri resultUri = result.getUri();  // finally jei pic ta gallery theke crop kore processing hoye ashlo shei pic er Uri. aita akhun upload hobe.
+                String uId = mFireBaseUser.getUid();
 
-                    File thumb_filePath = new File(resultUri.getPath());
-                    Bitmap thumb_bitmap = new Compressor(this)
-                            .setMaxWidth(200)
-                            .setMaxHeight(200)
-                            .setQuality(10)
-                            .compressToBitmap(thumb_filePath);
+                File thumb_filePath = new File(resultUri.getPath());
+                Bitmap thumb_bitmap = new Compressor(this)
+                        .setMaxWidth(200)
+                        .setMaxHeight(200)
+                        .setQuality(10)
+                        .compressToBitmap(thumb_filePath);
 
-                    //for uploading thumb image to database
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    final byte[] thumb_byte = baos.toByteArray();
+                //for uploading thumb image to database
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                final byte[] thumb_byte = baos.toByteArray();
 
-                    StorageReference store = mStorage.child("Profile picture").child(uId + ".jpg");     // random() er bodole "uId" likhle valo hobe.
-                    final StorageReference thumb_store = mStorage.child("Profile picture").child("Thumb").child(uId + ".jpg");
+                StorageReference store = mStorage.child("Profile picture").child(uId + ".jpg");     // random() er bodole "uId" likhle valo hobe.
+                final StorageReference thumb_store = mStorage.child("Profile picture").child("Thumb").child(uId + ".jpg");
 
-                    store.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            if(task.isSuccessful()){
+                store.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if(task.isSuccessful()){
 
-                                final String download_url = task.getResult().getDownloadUrl().toString();
+                            final String download_url = task.getResult().getDownloadUrl().toString();
 
-                                UploadTask uploadTask = thumb_store.putBytes(thumb_byte);
+                            UploadTask uploadTask = thumb_store.putBytes(thumb_byte);
 
-                                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
+                            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
 
-                                        String download_thumb_url = thumb_task.getResult().getDownloadUrl().toString();
+                                    String download_thumb_url = thumb_task.getResult().getDownloadUrl().toString();
 
-                                        if(thumb_task.isSuccessful()) {
+                                    if(thumb_task.isSuccessful()) {
 
-                                            Map updateHashMap = new HashMap();      //    Map <String, String> likhle hobe na.
-                                            updateHashMap.put("Image", download_url);
-                                            updateHashMap.put("Thumb_image", download_thumb_url);
+                                        Map updateHashMap = new HashMap();      //    Map <String, String> likhle hobe na.
+                                        updateHashMap.put("Image", download_url);
+                                        updateHashMap.put("Thumb_image", download_thumb_url);
 
-                                            mDatabaseReference.updateChildren(updateHashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if(task.isSuccessful()) {
-                                                        mProgressBar.dismiss();
-                                                        Toast.makeText(SettingsActivity.this, "Uploaded", Toast.LENGTH_LONG).show();
-                                                    }
-                                                    else{
-                                                        mProgressBar.dismiss();
-                                                        Toast.makeText(SettingsActivity.this, "Error", Toast.LENGTH_LONG).show();
-                                                    }
+                                        mDatabaseReference.updateChildren(updateHashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()) {
+                                                    mProgressBar.dismiss();
+                                                    Toast.makeText(SettingsActivity.this, "Uploaded", Toast.LENGTH_LONG).show();
                                                 }
-                                            });
-                                        }
-                                        else{
-
-                                        }
+                                                else{
+                                                    mProgressBar.dismiss();
+                                                    Toast.makeText(SettingsActivity.this, "Error", Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
                                     }
-                                });
-                            }
-                            else{
-                                mProgressBar.dismiss();
-                                Toast.makeText(SettingsActivity.this, "Error", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+                                    else{
 
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Exception error = result.getError();
-                }
+                                    }
+                                }
+                            });
+                        }
+                        else{
+                            mProgressBar.dismiss();
+                            Toast.makeText(SettingsActivity.this, "Error", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
             }
+        }
 
 //        }
 //        else if(pressed.equals("COVER PIC")){
@@ -339,6 +345,18 @@ public class SettingsActivity extends AppCompatActivity {
 //       }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        onlineDatabase.setValue(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onlineDatabase.setValue(false);
+    }
+
 /*    public static String random() {
         Random generator = new Random();
         StringBuilder randomStringBuilder = new StringBuilder();
@@ -348,7 +366,6 @@ public class SettingsActivity extends AppCompatActivity {
             tempChar = (char) (generator.nextInt(75) + 48);
             randomStringBuilder.append(tempChar);
         }
-
         StringBuilder randomStringBuilder1 = new StringBuilder();
         char tempChar1;
         for (int i = 0; i < randomLength; i++){
