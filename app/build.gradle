@@ -41,6 +41,8 @@ dependencies {
     compile 'com.github.dimorinny:floating-text-button:0.0.4'
     implementation 'com.firebaseui:firebase-ui-database:2.3.0'
     compile 'id.zelory:compressor:2.0.0'
+//    compile 'com.squareup.okhttp3:okhttp:3.10.0'      // aita dile app crash kortese.
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
 }
 
 
