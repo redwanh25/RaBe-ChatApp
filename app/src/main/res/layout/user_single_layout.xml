@@ -34,4 +34,15 @@
         android:layout_marginTop="7dp"
         android:text="@string/default_status" />
 
+    <ImageView
+        android:id="@+id/onLine"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_alignTop="@+id/display_name_allUsers"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="9dp"
+        android:layout_toEndOf="@+id/display_name_allUsers"
+        android:src="@drawable/online"
+        android:visibility="invisible" />
+
 </RelativeLayout>
