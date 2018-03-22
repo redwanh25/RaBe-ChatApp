@@ -44,7 +44,6 @@ dependencies {
     compile 'id.zelory:compressor:2.0.0'
 //    compile 'com.squareup.okhttp3:okhttp:3.10.0'      // aita dile app crash kortese.
     compile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'com.github.lguipeng:BubbleView:1.0.1'
 }
 
 
