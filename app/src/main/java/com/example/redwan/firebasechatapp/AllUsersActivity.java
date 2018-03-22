@@ -64,7 +64,7 @@ public class AllUsersActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         FirebaseRecyclerAdapter <Users, UsersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
-                Users.class, R.layout.user_single_layout, UsersViewHolder.class, mDatabaseReference) {
+                Users.class, R.layout.user_single_layout_allusers, UsersViewHolder.class, mDatabaseReference) {
             @Override
             protected void populateViewHolder(final UsersViewHolder viewHolder, Users model, int position) {
                 viewHolder.setDisplayName(model.getName());

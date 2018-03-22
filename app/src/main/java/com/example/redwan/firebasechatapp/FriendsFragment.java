@@ -74,7 +74,7 @@ public class FriendsFragment extends Fragment {
         super.onStart();
 
         FirebaseRecyclerAdapter <Friends, FriendsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(
-                Friends.class, R.layout.user_single_layout, FriendsViewHolder.class, friendsDatabase) {
+                Friends.class, R.layout.user_single_layout_allusers, FriendsViewHolder.class, friendsDatabase) {
             @Override
             protected void populateViewHolder(final FriendsViewHolder viewHolder, final Friends model, int position) {
 
@@ -100,7 +100,7 @@ public class FriendsFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
 
-                                String[] option = {"Open Profile", "Send Message"};
+                                String[] option = {"Open Profile", "Send Messages"};
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                                 builder.setTitle("Select Options");

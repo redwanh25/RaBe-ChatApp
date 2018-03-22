@@ -8,9 +8,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/chat_profile_pic"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="6dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@drawable/avatar_default"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +21,7 @@
         android:layout_marginStart="16dp"
         android:maxLines="1"
         android:text="Display Name"
-        android:textSize="21sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/chat_profile_pic"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="online status"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/chat_profile_pic"
         app:layout_constraintTop_toBottomOf="@+id/chat_user_name" />
 

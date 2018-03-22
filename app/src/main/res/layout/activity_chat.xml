@@ -45,10 +45,23 @@
             android:layout_marginTop="0dp"
             android:background="@color/cardview_light_background"
             android:maxLines="12"
-            android:paddingBottom="13dp"
+            android:paddingBottom="7dp"
             android:paddingStart="10dp"
-            android:paddingTop="13dp" />
+            android:paddingTop="7dp" />
     </android.support.design.widget.TextInputLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chat_recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/chat_message_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarId_chat"
+        app:layout_constraintVertical_bias="0.0">
+
+    </android.support.v7.widget.RecyclerView>
 
 
 </android.support.constraint.ConstraintLayout>
