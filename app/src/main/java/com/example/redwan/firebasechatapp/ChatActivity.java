@@ -90,7 +90,7 @@ public class ChatActivity extends AppCompatActivity {
 
         chatUserName.setText(chatWithUserName);
 
-        mChatAddBtn =  findViewById(R.id.chat_add_btn);
+        mChatAddBtn = findViewById(R.id.chat_add_btn);
         mChatSendBtn = findViewById(R.id.chat_send_btn);
         mChatMessageView = findViewById(R.id.chat_message_view);
         mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -199,6 +199,8 @@ public class ChatActivity extends AppCompatActivity {
                 Messages message = dataSnapshot.getValue(Messages.class);
                 messagesList.add(message);
                 mAdapter.notifyDataSetChanged();
+
+                recyclerViewChat.scrollToPosition(messagesList.size() - 1);
             }
 
             @Override

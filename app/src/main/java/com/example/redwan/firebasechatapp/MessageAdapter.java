@@ -29,6 +29,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     }
 
+    // 2nd
+
     @Override
     public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = null;
@@ -44,6 +46,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     }
 
+    // 1st
+
     @Override
     public int getItemViewType(int position) {
 
@@ -57,6 +61,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             return 2;
         }
     }
+
+  //  4th
 
     @Override
     public void onBindViewHolder(final MessageViewHolder viewHolder, int i) {
@@ -85,6 +91,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public int getItemCount() {
         return mMessageList.size();
     }
+
+   // 3rd
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
