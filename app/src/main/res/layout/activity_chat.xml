@@ -11,36 +11,44 @@
         android:id="@+id/toolbarId_chat"
         layout="@layout/all_toolbar" />
 
-    <TextView
-        android:id="@+id/chat_message"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
-        android:hint="Type a message"
-        android:padding="12dp"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageButton2" />
-
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/chat_send_btn"
         android:layout_width="60dp"
-        android:layout_height="53dp"
-        android:background="@color/cardview_light_background"
+        android:layout_height="51dp"
+        android:background="@color/colorAccent"
         android:src="@drawable/sent_sms"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/chat_add_btn"
         android:layout_width="60dp"
-        android:layout_height="53dp"
-        android:background="@color/cardview_light_background"
+        android:layout_height="51dp"
+        android:background="@color/colorAccent"
         android:src="@drawable/add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/chat_message_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chat_send_btn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/chat_add_btn">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:background="@color/cardview_light_background"
+            android:maxLines="12"
+            android:paddingBottom="13dp"
+            android:paddingStart="10dp"
+            android:paddingTop="13dp" />
+    </android.support.design.widget.TextInputLayout>
 
 
 </android.support.constraint.ConstraintLayout>

@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 public class DeleteAccountActivity extends AppCompatActivity {
 
@@ -108,12 +109,12 @@ public class DeleteAccountActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        onlineDatabase.setValue(true);
+        onlineDatabase.setValue("true");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        onlineDatabase.setValue(false);
+        onlineDatabase.setValue(ServerValue.TIMESTAMP);
     }
 }

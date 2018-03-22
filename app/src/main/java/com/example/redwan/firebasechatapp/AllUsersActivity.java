@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -149,12 +150,12 @@ public class AllUsersActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        onlineDatabase.setValue(true);
+        onlineDatabase.setValue("true");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        onlineDatabase.setValue(false);
+        onlineDatabase.setValue(ServerValue.TIMESTAMP);
     }
 }

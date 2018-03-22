@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
             current = FirebaseAuth.getInstance().getCurrentUser();
             onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
-            onlineDatabase.setValue(true);
+            onlineDatabase.setValue("true");
         }
     }
 
@@ -67,13 +68,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        onlineDatabase.setValue(true);
+        onlineDatabase.setValue("true");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        onlineDatabase.setValue(false);
+        onlineDatabase.setValue(ServerValue.TIMESTAMP);
     }
 
     // online -------------------------
