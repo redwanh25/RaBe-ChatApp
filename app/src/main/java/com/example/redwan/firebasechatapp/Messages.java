@@ -8,21 +8,12 @@ public class Messages {
     private String message, type;
     private long  time;
     private boolean seen;
-
     private String from;
 
     public Messages(){
 
     }
     public Messages(String from) {
-        this.from = from;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
         this.from = from;
     }
 
@@ -65,4 +56,11 @@ public class Messages {
         this.seen = seen;
     }
 
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
 }

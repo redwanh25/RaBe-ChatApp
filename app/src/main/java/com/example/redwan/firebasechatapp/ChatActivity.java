@@ -27,6 +27,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,7 +112,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String online = dataSnapshot.child("Online").getValue().toString();
-                String image = dataSnapshot.child("Thumb_image").getValue().toString();
+                final String image = dataSnapshot.child("Thumb_image").getValue().toString();
 
                 if(online.equals("true")) {
                     chatOnlineStatus.setText("Online");
@@ -120,6 +123,18 @@ public class ChatActivity extends AppCompatActivity {
                     String lastSeenTime = timeAgo.getTimeAgo(time, getApplicationContext());
                     chatOnlineStatus.setText(lastSeenTime);
                 }
+
+                Picasso.with(ChatActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(chatProfilePic, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        Picasso.with(ChatActivity.this).load(image).placeholder(R.drawable.avatar_default).into(chatProfilePic);
+                    }
+                });
 
             }
 

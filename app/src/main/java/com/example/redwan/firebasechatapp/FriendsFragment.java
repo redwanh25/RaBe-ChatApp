@@ -74,7 +74,7 @@ public class FriendsFragment extends Fragment {
         super.onStart();
 
         FirebaseRecyclerAdapter <Friends, FriendsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(
-                Friends.class, R.layout.user_single_layout_allusers, FriendsViewHolder.class, friendsDatabase) {
+                Friends.class, R.layout.user_single_layout_alluser, FriendsViewHolder.class, friendsDatabase) {
             @Override
             protected void populateViewHolder(final FriendsViewHolder viewHolder, final Friends model, int position) {
 

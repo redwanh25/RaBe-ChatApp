@@ -64,7 +64,7 @@ public class AllUsersActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         FirebaseRecyclerAdapter <Users, UsersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
-                Users.class, R.layout.user_single_layout_allusers, UsersViewHolder.class, mDatabaseReference) {
+                Users.class, R.layout.user_single_layout_alluser, UsersViewHolder.class, mDatabaseReference) {
             @Override
             protected void populateViewHolder(final UsersViewHolder viewHolder, Users model, int position) {
                 viewHolder.setDisplayName(model.getName());
@@ -77,7 +77,7 @@ public class AllUsersActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.hasChild("Online")) {
-                            Boolean pic = (boolean) dataSnapshot.child("Online").getValue();
+                            String pic = dataSnapshot.child("Online").getValue().toString();
                             viewHolder.setOnlineStatus(pic);
                         }
                     }
@@ -134,10 +134,10 @@ public class AllUsersActivity extends AppCompatActivity {
             });
         }
 
-        public void setOnlineStatus(Boolean pic) {
+        public void setOnlineStatus(String pic) {
             ImageView image = mView.findViewById(R.id.onLine);
 
-            if(pic.equals(true)) {
+            if(pic.equals("true")) {
                 image.setVisibility(View.VISIBLE);
             }
             else {
