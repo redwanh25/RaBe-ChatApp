@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, DeleteAccountActivity.class));
         }
         else if(item.getItemId() == R.id.logout){
-            onlineDatabase.setValue(false);
+            onlineDatabase.setValue(ServerValue.TIMESTAMP);
             FirebaseAuth.getInstance().signOut();
             setToStart();
         }
