@@ -28,6 +28,7 @@
         android:text="TextView"
         android:textColor="@color/cardview_light_background"
         android:textSize="16sp"
+        android:textIsSelectable="true"
         app:layout_constraintStart_toEndOf="@+id/message_profile_layout"
         app:layout_constraintTop_toTopOf="parent" />
 

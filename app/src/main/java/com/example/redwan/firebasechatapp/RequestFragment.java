@@ -88,7 +88,7 @@ public class RequestFragment extends Fragment {
                         String thumbPic = dataSnapshot.child("Thumb_image").getValue().toString();
 
                         if (dataSnapshot.hasChild("Online")) {
-                            Boolean pic = (boolean) dataSnapshot.child("Online").getValue();
+                            String pic = dataSnapshot.child("Online").getValue().toString();
                             viewHolder.setOnlineStatus(pic);
                         }
                         viewHolder.setImage(thumbPic, getContext());
@@ -148,10 +148,10 @@ public class RequestFragment extends Fragment {
             });
         }
 
-        public void setOnlineStatus(Boolean pic) {
+        public void setOnlineStatus(String pic) {
             ImageView image = mView.findViewById(R.id.onLineChat);
 
-            if(pic.equals(true)) {
+            if(pic.equals("true")) {
                 image.setVisibility(View.VISIBLE);
             }
             else {

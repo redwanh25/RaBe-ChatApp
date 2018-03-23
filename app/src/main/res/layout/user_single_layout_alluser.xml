@@ -27,8 +27,8 @@
 
     <TextView
         android:id="@+id/status_allUsers"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
+        android:layout_width="220dp"
+        android:layout_height="19dp"
         android:layout_alignStart="@+id/display_name_allUsers"
         android:layout_below="@+id/display_name_allUsers"
         android:layout_marginTop="7dp"

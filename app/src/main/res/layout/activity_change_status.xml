@@ -28,6 +28,7 @@
             android:backgroundTint="@android:color/white"
             android:gravity="bottom|left"
             android:hint="Change Status"
+            android:textIsSelectable="true"
             android:maxLines="4"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

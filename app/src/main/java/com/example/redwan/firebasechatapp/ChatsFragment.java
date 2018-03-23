@@ -105,7 +105,7 @@ public class ChatsFragment extends Fragment {
 
                 final String list_user_id = getRef(i).getKey();
 
-                Query lastMessageQuery = mMessageDatabase.child(list_user_id).limitToLast(1);
+                Query lastMessageQuery = mMessageDatabase.child(list_user_id).orderByKey().limitToLast(1);
 
                 lastMessageQuery.addChildEventListener(new ChildEventListener() {
                     @Override
@@ -203,9 +203,9 @@ public class ChatsFragment extends Fragment {
 //            if(!isSeen){
 //                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.BOLD);
 //            } else {
-
-                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.NORMAL);
-
+//
+//                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.NORMAL);
+//
 //            }
 
         }

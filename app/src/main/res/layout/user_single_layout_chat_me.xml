@@ -18,6 +18,7 @@
         android:text="TextView"
         android:textColor="@color/cardview_dark_background"
         android:textSize="16sp"
+        android:textIsSelectable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
