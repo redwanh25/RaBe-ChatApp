@@ -1,75 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#332C56"
+    android:orientation="vertical"
+    android:weightSum="12"
     tools:context="com.example.redwan.firebasechatapp.StartActivity">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="230dp"
-        android:layout_height="129dp"
-        android:layout_marginTop="68dp"
-        android:src="@drawable/redwan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="130dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="6"
+        android:src="@drawable/redwan" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="300dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="36dp"
-        android:text="Wellcome to RaBe           Chat App"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:layout_gravity="center"
+        android:text="Wellcome to RaBe\nChat App"
         android:textAlignment="center"
         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/have"
         android:layout_width="230dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="88dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:drawableLeft="@drawable/smiling_face"
-        android:text="already have account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        android:text="already have account" />
 
     <Button
         android:id="@+id/not"
         android:layout_width="230dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:drawableLeft="@drawable/account_button"
-        android:text="Create a new account?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/have" />
+        android:text="Create a new account?" />
 
 
     <TextView
         android:id="@+id/forgetPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
         android:text="Forget password?"
         android:textColor="@android:color/holo_red_light"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/not"
-        app:layout_constraintVertical_bias="0.0" />
+        android:textSize="16sp"/>
 
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
