@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -13,12 +14,16 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 public class DeleteAccountActivity extends AppCompatActivity {
 
@@ -30,7 +35,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private DatabaseReference databaseReference;
 
-    private DatabaseReference onlineDatabase;
+    private DatabaseReference onlineDatabase, deleteDatabase;
     private FirebaseUser current;
 
     @Override
@@ -49,10 +54,12 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        deleteDatabase = FirebaseDatabase.getInstance().getReference();
+
 
         current = FirebaseAuth.getInstance().getCurrentUser();
         onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
-
+/*
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +75,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
                 if(selectedItem.equals("Yes")) {
                     progressDialog.setMessage("Deleting your account...");
                     progressDialog.show();
+
+
+
                     databaseReference.child(firebaseUser.getUid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -99,11 +109,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
                 else if(selectedItem.equals("No")){
                     finish();
                 }
-//                else {
-//                    Toast.makeText(DeleteAccountActivity.this, "you don't have selected any item", Toast.LENGTH_LONG).show();
-//                }
             }
         });
+*/
     }
 
     @Override
@@ -118,3 +126,48 @@ public class DeleteAccountActivity extends AppCompatActivity {
         onlineDatabase.setValue(ServerValue.TIMESTAMP);
     }
 }
+
+/*    //-------------- Chat delete ----
+
+       deleteDatabase.child("Chat").addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            if(dataSnapshot.hasChild(current.getUid())) {
+
+                deleteDatabase.child("Chat").child(current.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot data : dataSnapshot.getChildren()){
+                            final DataSnapshot Data = data;
+                            deleteDatabase.child("Chat").child(current.getUid()).child(data.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    deleteDatabase.child("Chat").child(Data.getKey()).child(current.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    });
+
+
+    // --------------*/

@@ -151,10 +151,6 @@ public class ProfileActivity extends AppCompatActivity {
                                         cancel_request_button.setEnabled(false);
 
                                     }
-                                    else {
-                                        currentStatus = "notFriend";
-                                        sent_cancel_button.setText("Send Friend Request");
-                                    }
                                 }
 
                                 @Override
@@ -163,7 +159,6 @@ public class ProfileActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                        sent_cancel_button.setVisibility(View.VISIBLE);
                         progressDialog.dismiss();
                     }
                     @Override
@@ -181,52 +176,28 @@ public class ProfileActivity extends AppCompatActivity {
         cancel_request_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                friendRequest_database.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
+                friendRequest_database.child(uId).child(userKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild(userKey) && dataSnapshot.child(userKey).child("request_type").getValue().toString().equals("received")){
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                            friendRequest_database.child(uId).child(userKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        if(task.isSuccessful()) {
+                            friendRequest_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
+                                public void onSuccess(Void aVoid) {
 
-                                    if(task.isSuccessful()) {
-                                        friendRequest_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
+                                    currentStatus = "notFriend";
+                                    sent_cancel_button.setText("Send Friend Request");
+                                    Toast.makeText(ProfileActivity.this, "Request Cancel", Toast.LENGTH_LONG).show();
 
-                                                currentStatus = "notFriend";
-                                                sent_cancel_button.setText("Send Friend Request");
-                                                Toast.makeText(ProfileActivity.this, "Request Cancel", Toast.LENGTH_LONG).show();
-
-                                                cancel_request_button.setVisibility(View.INVISIBLE);
-                                                cancel_request_button.setEnabled(false);
-                                            }
-                                        });
-                                    }
-                                    else {
-                                        Toast.makeText(ProfileActivity.this, "Something is wrong", Toast.LENGTH_LONG).show();
-                                    }
-                                    sent_cancel_button.setEnabled(true);
+                                    cancel_request_button.setVisibility(View.INVISIBLE);
+                                    cancel_request_button.setEnabled(false);
                                 }
                             });
                         }
                         else {
-                            currentStatus = "notFriend";
-                            sent_cancel_button.setText("Send Friend Request");
-
-                            Toast.makeText(ProfileActivity.this, "this person have already canceled friend request.", Toast.LENGTH_LONG).show();
-
-                            cancel_request_button.setVisibility(View.VISIBLE);
-                            cancel_request_button.setEnabled(false);
-
+                            Toast.makeText(ProfileActivity.this, "Something is wrong", Toast.LENGTH_LONG).show();
                         }
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
+                        sent_cancel_button.setEnabled(true);
                     }
                 });
             }
@@ -241,46 +212,29 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if(currentStatus.equals("notFriend")){
 
-                    friendRequest_database.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    friendRequest_database.child(uId).child(userKey).child("request_type").setValue("sent").addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.hasChild(userKey) && dataSnapshot.child(userKey).child("request_type").getValue().toString().equals("received")){
-
-                                Toast.makeText(ProfileActivity.this, "You have already received friend request from this person. please refresh the page.", Toast.LENGTH_LONG).show();
-                            }
-                            else {
-
-                                friendRequest_database.child(uId).child(userKey).child("request_type").setValue("sent").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                friendRequest_database.child(userKey).child(uId).child("request_type").setValue("received").addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()) {
-                                            friendRequest_database.child(userKey).child(uId).child("request_type").setValue("received").addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
+                                    public void onSuccess(Void aVoid) {
 
-                                                    currentStatus = "requestSent";
-                                                    sent_cancel_button.setText("Cancel Friend Request");
-                                                    Toast.makeText(ProfileActivity.this, "Request Sent Successfully", Toast.LENGTH_LONG).show();
+                                        currentStatus = "requestSent";
+                                        sent_cancel_button.setText("Cancel Friend Request");
+                                        Toast.makeText(ProfileActivity.this, "Request Sent Successfully", Toast.LENGTH_LONG).show();
 
-                                                    cancel_request_button.setVisibility(View.INVISIBLE);
-                                                    cancel_request_button.setEnabled(false);
-                                                  }
-                                            });
-
-                                        }
-                                        else {
-                                            Toast.makeText(ProfileActivity.this, "Request Sent Failed", Toast.LENGTH_LONG).show();
-                                        }
-                                        sent_cancel_button.setEnabled(true);
-
+                                        cancel_request_button.setVisibility(View.INVISIBLE);
+                                        cancel_request_button.setEnabled(false);
                                     }
                                 });
+
+                            }
+                            else {
+                                Toast.makeText(ProfileActivity.this, "Request Sent Failed", Toast.LENGTH_LONG).show();
                             }
 
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            sent_cancel_button.setEnabled(true);
 
                         }
                     });
@@ -292,70 +246,29 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if(currentStatus.equals("requestSent")) {
 
-                    friendList_database.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    friendRequest_database.child(uId).child(userKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.hasChild(userKey)) {
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                                currentStatus = "Friend";
-      //                        sent_cancel_button.setText("unfriend this Person");
-                                Toast.makeText(ProfileActivity.this, "This person have already received your request. please refresh the page.", Toast.LENGTH_LONG).show();
-
-                            }
-                            else {
-
-                                friendRequest_database.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            if(task.isSuccessful()) {
+                                friendRequest_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                    public void onSuccess(Void aVoid) {
 
-                                        if(dataSnapshot.hasChild(userKey)) {
+                                        currentStatus = "notFriend";
+                                        sent_cancel_button.setText("Send Friend Request");
+                                        Toast.makeText(ProfileActivity.this, "Request Cancel", Toast.LENGTH_LONG).show();
 
-                                            friendRequest_database.child(uId).child(userKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-
-                                                    if(task.isSuccessful()) {
-                                                        friendRequest_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
-
-                                                                currentStatus = "notFriend";
-                                                                sent_cancel_button.setText("Send Friend Request");
-                                                                Toast.makeText(ProfileActivity.this, "Request Cancel", Toast.LENGTH_LONG).show();
-
-                                                                cancel_request_button.setVisibility(View.INVISIBLE);
-                                                                cancel_request_button.setEnabled(false);
-                                                            }
-                                                        });
-                                                    }
-                                                    else {
-                                                        Toast.makeText(ProfileActivity.this, "Request Cancel Failed", Toast.LENGTH_LONG).show();
-                                                    }
-
-                                                    sent_cancel_button.setEnabled(true);
-
-                                                }
-                                            });
-
-                                        }
-                                        else {
-                                            currentStatus = "notFriend";
-                //                          sent_cancel_button.setText("Send Friend Request");
-                                            Toast.makeText(ProfileActivity.this, "This person have already cancel your request. please refresh the page.", Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
+                                        cancel_request_button.setVisibility(View.INVISIBLE);
+                                        cancel_request_button.setEnabled(false);
                                     }
                                 });
                             }
+                            else {
+                                Toast.makeText(ProfileActivity.this, "Request Cancel Failed", Toast.LENGTH_LONG).show();
+                            }
 
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            sent_cancel_button.setEnabled(true);
 
                         }
                     });
@@ -367,62 +280,40 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if(currentStatus.equals("requestReceived")) {
 
-                    friendRequest_database.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    final String date = DateFormat.getDateTimeInstance().format(new Date());
+                    friendList_database.child(uId).child(userKey).child("date").setValue(date).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.hasChild(userKey) && dataSnapshot.child(userKey).child("request_type").getValue().toString().equals("received")){
-
-                                final String date = DateFormat.getDateTimeInstance().format(new Date());
-                                friendList_database.child(uId).child(userKey).child("date").setValue(date).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                friendList_database.child(userKey).child(uId).child("date").setValue(date).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()) {
-                                            friendList_database.child(userKey).child(uId).child("date").setValue(date).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
+                                    public void onSuccess(Void aVoid) {
 
-                                                    friendRequest_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
+                                        friendRequest_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
 
-                                                            friendRequest_database.child(uId).child(userKey).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void aVoid) {
+                                                friendRequest_database.child(uId).child(userKey).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
 
-                                                                    currentStatus = "Friend";
-                                                                    sent_cancel_button.setText("unfriend this Person");
-                                                                    Toast.makeText(ProfileActivity.this, "Request has been Received", Toast.LENGTH_LONG).show();
+                                                        currentStatus = "Friend";
+                                                        sent_cancel_button.setText("unfriend this Person");
+                                                        Toast.makeText(ProfileActivity.this, "Request has been Received", Toast.LENGTH_LONG).show();
 
-                                                                    cancel_request_button.setVisibility(View.INVISIBLE);
-                                                                    cancel_request_button.setEnabled(false);
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                        }
-                                        else {
-                                            Toast.makeText(ProfileActivity.this, "Something is wrong", Toast.LENGTH_LONG).show();
-                                        }
-                                        sent_cancel_button.setEnabled(true);
+                                                        cancel_request_button.setVisibility(View.INVISIBLE);
+                                                        cancel_request_button.setEnabled(false);
+                                                    }
+                                                });
+                                            }
+                                        });
                                     }
                                 });
                             }
                             else {
-                                currentStatus = "notFriend";
-       //                       sent_cancel_button.setText("Send Friend Request");
-                                Toast.makeText(ProfileActivity.this, "This person have canceled friend request. please refresh the page.", Toast.LENGTH_LONG).show();
-
-      //                        cancel_request_button.setVisibility(View.VISIBLE);
-                                cancel_request_button.setEnabled(false);
+                                Toast.makeText(ProfileActivity.this, "Something is wrong", Toast.LENGTH_LONG).show();
                             }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
+                            sent_cancel_button.setEnabled(true);
                         }
                     });
 
@@ -432,55 +323,31 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if(currentStatus.equals("Friend")) {
 
-                    friendList_database.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    friendList_database.child(uId).child(userKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
 
-                            if(dataSnapshot.hasChild(userKey)) {
-
-                                friendList_database.child(uId).child(userKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                friendList_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()) {
+                                    public void onSuccess(Void aVoid) {
 
-                                            friendList_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
+                                        currentStatus = "notFriend";
+                                        sent_cancel_button.setText("Send Friend Request");
+                                        Toast.makeText(ProfileActivity.this, "Unfriend successfully", Toast.LENGTH_LONG).show();
 
-                                                    currentStatus = "notFriend";
-                                                    sent_cancel_button.setText("Send Friend Request");
-                                                    Toast.makeText(ProfileActivity.this, "Unfriend successfully", Toast.LENGTH_LONG).show();
+                                        cancel_request_button.setVisibility(View.INVISIBLE);
+                                        cancel_request_button.setEnabled(false);
 
-                                                    cancel_request_button.setVisibility(View.INVISIBLE);
-                                                    cancel_request_button.setEnabled(false);
-
-                                                }
-                                            });
-                                        }
-                                        else {
-                                            Toast.makeText(ProfileActivity.this, "Something is wrong", Toast.LENGTH_LONG).show();
-                                        }
-                                        sent_cancel_button.setEnabled(true);
                                     }
                                 });
-
                             }
                             else {
-                                currentStatus = "notFriend";
-        //                      sent_cancel_button.setText("Send Friend Request");
-                                Toast.makeText(ProfileActivity.this, "This person have already unfriend you. please refresh the page.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(ProfileActivity.this, "Something is wrong", Toast.LENGTH_LONG).show();
                             }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
+                            sent_cancel_button.setEnabled(true);
                         }
                     });
-
-
-
                 }
             }
         });
