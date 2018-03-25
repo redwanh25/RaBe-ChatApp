@@ -34,8 +34,7 @@
             android:parentActivityName=".StartActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SettingsActivity"
-            android:screenOrientation="portrait" />
+            android:name=".SettingsActivity"/>
         <activity
             android:name=".ChangeStatus"
             android:parentActivityName=".SettingsActivity"
@@ -61,8 +60,7 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ProfileActivity"
-            android:screenOrientation="portrait" />
+            android:name=".ProfileActivity" />
         <activity
             android:name=".ChatActivity"
             android:parentActivityName=".MainActivity"
