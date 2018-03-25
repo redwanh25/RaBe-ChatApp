@@ -24,9 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".StartActivity"
-            />
+        <activity android:name=".StartActivity" />
         <activity
             android:name=".RegesterActivity"
             android:parentActivityName=".StartActivity"
@@ -68,7 +66,7 @@
         <activity
             android:name=".ChatActivity"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
