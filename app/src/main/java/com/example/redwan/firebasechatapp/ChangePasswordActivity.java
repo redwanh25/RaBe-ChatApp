@@ -3,6 +3,8 @@ package com.example.redwan.firebasechatapp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +24,7 @@ import com.google.firebase.database.ServerValue;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private EditText change_password;
+    private TextInputLayout change_password;
     private Button change_password_button;
     private FirebaseUser firebaseUser;
     private ProgressDialog progressDialog;
@@ -52,7 +54,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         change_password_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newPass = change_password.getText().toString();
+                String newPass = change_password.getEditText().getText().toString();
                 if(newPass.length() >= 6){
                     progressDialog.setMessage("changing your password...");
                     progressDialog.show();

@@ -2,6 +2,6 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="55dp"
-    android:background="@color/colorPrimary">
+    android:background="@drawable/gradient_1">
 
 </android.support.v7.widget.Toolbar>

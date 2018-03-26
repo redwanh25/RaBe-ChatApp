@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.email);
-        pass = findViewById(R.id.pass);
+        pass = findViewById(R.id.pass_editText);
         button = findViewById(R.id.button5);
 
         mprogress = new ProgressDialog(this);

@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#332C56"
+    android:background="@drawable/gradient"
     android:orientation="vertical"
     android:weightSum="12"
+
     tools:context="com.example.redwan.firebasechatapp.StartActivity">
 
     <ImageView

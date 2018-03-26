@@ -3,8 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/Home_Page"
+        android:title="Home Page" />
+    <item
         android:id="@+id/accountSetting"
-        android:title="Account Settings" />
+        android:title="User Account" />
     <item
         android:id="@+id/all_users"
         android:title="All Users" />

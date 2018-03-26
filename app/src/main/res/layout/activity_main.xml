@@ -18,13 +18,15 @@
             android:id="@+id/toolbarId_main"
             layout="@layout/all_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/main_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextColor="#E1E1E1">
+            app:tabTextColor="#E1E1E1"
+            android:background="@drawable/gradient_1">
 
         </android.support.design.widget.TabLayout>
 
@@ -39,10 +41,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
     </android.support.v4.view.ViewPager>
-
 
 </android.support.constraint.ConstraintLayout>

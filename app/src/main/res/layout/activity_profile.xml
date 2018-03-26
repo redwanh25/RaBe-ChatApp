@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#332C56"
+    android:background="@drawable/gradient"
     tools:context="com.example.redwan.firebasechatapp.ProfileActivity"
     tools:layout_editor_absoluteY="25dp"
     android:orientation="vertical"
@@ -27,7 +27,7 @@
         android:layout_weight="2"
         android:gravity="bottom|center"
         android:text="Display Name"
-        android:textColor="@android:color/holo_orange_dark"
+        android:textColor="@color/cardview_light_background"
         android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@+id/profilePic_view"
         tools:layout_editor_absoluteX="102dp" />
@@ -40,7 +40,7 @@
         android:paddingTop="15dp"
         android:text="@string/default_status"
         android:textAlignment="center"
-        android:textColor="#929392"
+        android:textColor="@color/cardview_dark_background"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="294dp" />
 
@@ -50,7 +50,7 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:text="Total Friends"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
         tools:layout_editor_absoluteX="102dp"
         tools:layout_editor_absoluteY="361dp" />

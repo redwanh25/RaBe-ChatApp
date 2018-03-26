@@ -95,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         super.onOptionsItemSelected(item);
 
-        if(item.getItemId() == R.id.accountSetting){
+        if(item.getItemId() == R.id.Home_Page) {
+            startActivity(new Intent(MainActivity.this, Blog.class));
+        }
+        else if(item.getItemId() == R.id.accountSetting){
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
         else if(item.getItemId() == R.id.changePass){
