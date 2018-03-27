@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.example.redwan.firebasechatapp.Blog">
 
+    <include layout="@layout/all_toolbar"
+        android:id="@+id/toolbarId_homePage" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
@@ -15,8 +18,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nevigation_menu">
+        app:menu="@menu/bottom_navigation_menu">
 
     </android.support.design.widget.BottomNavigationView>
+
+    <FrameLayout
+        android:id="@+id/blog_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarId_homePage">
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>
