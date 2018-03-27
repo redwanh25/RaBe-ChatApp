@@ -71,6 +71,31 @@ public class RegesterActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(RegesterActivity.this, "something is missing", Toast.LENGTH_LONG).show();
                 }
+/*
+// you need to be a daffodilian...
+
+                if(!TextUtils.isEmpty(u) && !TextUtils.isEmpty(e) && !TextUtils.isEmpty(p)) {
+                    try {
+                        String substring = e.substring(e.length()-11, e.length());
+                        if(!substring.equals("@diu.edu.bd")) {
+                            Toast.makeText(RegesterActivity.this, "You Should be a Daffodilian. Please use Daffodil provide Email id.", Toast.LENGTH_LONG).show();
+                        }
+                        else if (p.compareTo(c_p) != 0) {
+                            Toast.makeText(RegesterActivity.this, "Password is not Matched", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            regester_user(u, e, p);
+                        }
+                    } catch (Exception ex) {
+                        Toast.makeText(RegesterActivity.this, "You Should be a Daffodilian. Please use Daffodil provide Email id.", Toast.LENGTH_LONG).show();
+                    }
+
+
+                }
+                else{
+                    Toast.makeText(RegesterActivity.this, "something is missing", Toast.LENGTH_LONG).show();
+                }
+*/
             }
         });
 

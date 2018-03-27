@@ -2,14 +2,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.redwan.firebasechatapp.NotificationFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/main_tabs_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_1"
+            app:tabTextColor="#E1E1E1">
+
+        </android.support.design.widget.TabLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_tabPager_notification"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Notification Fragment"
-        android:textSize="24sp" />
+        android:layout_marginTop="48dp">
+
+    </android.support.v4.view.ViewPager>
+
 </FrameLayout>

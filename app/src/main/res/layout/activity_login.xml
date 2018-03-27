@@ -36,7 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginTop="8dp"
-        android:textColorHint="@color/cardview_dark_background"
+        android:textColorHint="@color/cardview_light_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +53,8 @@
             android:maxLines="1"
             android:paddingLeft="55dp"
             android:singleLine="true"
-            android:textColor="@color/cardview_light_background"
-            android:textColorHint="#929392" />
+            android:textColor="@color/cardview_dark_background"
+            android:textColorHint="@color/cardview_light_background" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -63,7 +63,7 @@
         android:layout_height="57dp"
         android:layout_marginTop="8dp"
         android:gravity="left|center"
-        android:textColorHint="@color/cardview_dark_background"
+        android:textColorHint="@color/cardview_light_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,8 +80,8 @@
             android:maxLines="1"
             android:paddingLeft="55dp"
             android:singleLine="true"
-            android:textColor="@color/cardview_light_background"
-            android:textColorHint="#929392" />
+            android:textColor="@color/cardview_dark_background"
+            android:textColorHint="@color/cardview_light_background" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
