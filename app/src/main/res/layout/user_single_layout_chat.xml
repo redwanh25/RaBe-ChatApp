@@ -32,4 +32,15 @@
         app:layout_constraintStart_toEndOf="@+id/message_profile_layout"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/time_For_Others"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="4dp"
+        android:text="Mar 28, 2018  8:08:35 AM"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_text_layout" />
+
 </android.support.constraint.ConstraintLayout>

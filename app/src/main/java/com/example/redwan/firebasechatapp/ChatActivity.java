@@ -31,7 +31,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +61,6 @@ public class ChatActivity extends AppCompatActivity {
     private final List<Messages> messagesList = new ArrayList<>();
     private LinearLayoutManager mLinearLayout;
     private MessageAdapter mAdapter;
-
-    private Boolean check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +110,6 @@ public class ChatActivity extends AppCompatActivity {
         current = FirebaseAuth.getInstance().getCurrentUser();
         onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
 
-        check = false;
-
         databaseReference.child("users").child(mChatUser).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -150,9 +148,11 @@ public class ChatActivity extends AppCompatActivity {
 
         mRootRef.child("Chat").child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                if(!dataSnapshot.hasChild(mChatUser)){
+                String message1 = mChatMessageView.getEditText().getText().toString();
+
+                if(!dataSnapshot.hasChild(mChatUser) && !TextUtils.isEmpty(message1)) {
 
                     Map chatAddMap = new HashMap();
                     chatAddMap.put("seen", false);
@@ -166,7 +166,7 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                            if(databaseError != null){
+                            if (databaseError != null) {
 
                                 Log.d("CHAT_LOG", databaseError.getMessage().toString());
 
@@ -174,7 +174,6 @@ public class ChatActivity extends AppCompatActivity {
 
                         }
                     });
-
                 }
 
             }
@@ -236,7 +235,7 @@ public class ChatActivity extends AppCompatActivity {
 
         if(!TextUtils.isEmpty(message)){
 
-            check = true;
+            String date = DateFormat.getDateTimeInstance().format(new Date());
 
             String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser;
             String chat_user_ref = "messages/" + mChatUser + "/" + mCurrentUserId;
@@ -250,7 +249,7 @@ public class ChatActivity extends AppCompatActivity {
             messageMap.put("message", message);
             messageMap.put("seen", false);
             messageMap.put("type", "text");
-            messageMap.put("time", ServerValue.TIMESTAMP);
+            messageMap.put("time", date);
             messageMap.put("from", mCurrentUserId);
 
             Map messageUserMap = new HashMap();

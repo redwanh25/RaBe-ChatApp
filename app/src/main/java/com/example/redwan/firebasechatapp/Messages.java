@@ -6,7 +6,7 @@ package com.example.redwan.firebasechatapp;
 
 public class Messages {
     private String message, type;
-    private long  time;
+    private String  time;
     private boolean seen;
     private String from;
 
@@ -17,7 +17,7 @@ public class Messages {
         this.from = from;
     }
 
-    public Messages(String message, String type, long time, boolean seen) {
+    public Messages(String message, String type, String time, boolean seen) {
         this.message = message;
         this.type = type;
         this.time = time;
@@ -40,11 +40,11 @@ public class Messages {
         this.type = type;
     }
 
-    public long getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

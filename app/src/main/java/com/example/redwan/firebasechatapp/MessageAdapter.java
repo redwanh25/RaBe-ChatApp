@@ -8,6 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -22,6 +30,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     private List<Messages> mMessageList;
     private String currentUser;
+    private DatabaseReference mUserDatabase;
 
     public MessageAdapter(List<Messages> mMessageList) {
 
@@ -72,18 +81,44 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         Messages c = mMessageList.get(i);
         String fromUser = c.getFrom();
 
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(fromUser);
+
         if(fromUser.equals(currentUser)) {
             viewHolder.messageTextMe.setBackgroundResource(R.drawable.sms_background_myself);
             viewHolder.messageTextMe.setTextColor(Color.BLACK);
             viewHolder.messageTextMe.setText(c.getMessage());
+            viewHolder.timeForMe.setText(c.getTime());
         }
         else {
             viewHolder.messageText.setBackgroundResource(R.drawable.sms_background_others);
             viewHolder.messageText.setTextColor(Color.WHITE);
             viewHolder.messageText.setText(c.getMessage());
-        }
+            viewHolder.timeForOthers.setText(c.getTime());
 
-//        viewHolder.messageText.setText(c.getMessage());
+            mUserDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    final String image = dataSnapshot.child("Thumb_image").getValue().toString();
+
+                    Picasso.with(viewHolder.profileImage.getContext()).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+                        @Override
+                        public void onError() {
+                            Picasso.with(viewHolder.profileImage.getContext()).load(image).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage);
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
     }
 
@@ -96,7 +131,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView messageText, messageTextMe;
+        public TextView messageText, messageTextMe, timeForOthers, timeForMe;
         public CircleImageView profileImage;
         public MessageViewHolder(View view) {
             super(view);
@@ -104,6 +139,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             messageText = view.findViewById(R.id.message_text_layout);
             profileImage = view.findViewById(R.id.message_profile_layout);
             messageTextMe = view.findViewById(R.id.message_text_layout_me);
+            timeForMe = view.findViewById(R.id.time_For_Me);
+            timeForOthers = view.findViewById(R.id.time_For_Others);
 
         }
     }
