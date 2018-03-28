@@ -2,8 +2,15 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Wallpaper" />
+    <item
+        android:icon="@drawable/video_call"
+        android:title="Video Call"
+        app:showAsAction="always" />
     <item android:title="View Details" />
+    <item
+        android:icon="@drawable/phone_call"
+        android:title="Audio Call"
+        app:showAsAction="always" />
     <item android:title="Settings" />
     <item android:title="Profile" />
 </menu>
