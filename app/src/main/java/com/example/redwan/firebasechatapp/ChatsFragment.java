@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -48,7 +50,6 @@ public class ChatsFragment extends Fragment {
     private String mCurrent_user_id;
 
     private View mMainView;
-
 
     public ChatsFragment() {
         // Required empty public constructor
@@ -102,10 +103,9 @@ public class ChatsFragment extends Fragment {
             protected void populateViewHolder(final ConvViewHolder convViewHolder, final Conv conv, int i) {
 
 
-
                 final String list_user_id = getRef(i).getKey();
 
-                Query lastMessageQuery = mMessageDatabase.child(list_user_id).orderByKey().limitToLast(1);
+                Query lastMessageQuery = mMessageDatabase.child(list_user_id).limitToLast(1);
 
                 lastMessageQuery.addChildEventListener(new ChildEventListener() {
                     @Override
@@ -200,13 +200,13 @@ public class ChatsFragment extends Fragment {
             TextView userStatusView = (TextView) mView.findViewById(R.id.status_allUsers);
             userStatusView.setText(message);
 
-//            if(!isSeen){
-//                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.BOLD);
-//            } else {
-//
-//                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.NORMAL);
-//
-//            }
+            if(!isSeen){
+                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.BOLD);
+            } else {
+
+                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.NORMAL);
+
+            }
 
         }
 
