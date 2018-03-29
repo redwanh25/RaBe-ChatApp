@@ -55,47 +55,47 @@ public class RegesterActivity extends AppCompatActivity {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String u = user.getEditText().getText().toString();
-                String e = email.getEditText().getText().toString();
-                String p = pass.getEditText().getText().toString();
-                String c_p = c_pass.getEditText().getText().toString();
+            String u = user.getEditText().getText().toString();
+            String e = email.getEditText().getText().toString();
+            String p = pass.getEditText().getText().toString();
+            String c_p = c_pass.getEditText().getText().toString();
+/*
+            if(!TextUtils.isEmpty(u) && !TextUtils.isEmpty(e) && !TextUtils.isEmpty(p)) {
+                if (p.compareTo(c_p) != 0) {
+                    Toast.makeText(RegesterActivity.this, "Password is not Matched", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    regester_user(u, e, p);
+                }
+            }
+            else{
+                Toast.makeText(RegesterActivity.this, "something is missing", Toast.LENGTH_LONG).show();
+            }
+*/
 
-                if(!TextUtils.isEmpty(u) && !TextUtils.isEmpty(e) && !TextUtils.isEmpty(p)) {
-                    if (p.compareTo(c_p) != 0) {
+// you need to be a daffodilian...
+
+            if(!TextUtils.isEmpty(u) && !TextUtils.isEmpty(e) && !TextUtils.isEmpty(p)) {
+                try {
+                    String substring = e.substring(e.length()-11, e.length());
+                    if(!substring.equals("@diu.edu.bd")) {
+                        Toast.makeText(RegesterActivity.this, "You Should be a Daffodilian. Please use Daffodil provide Email id.", Toast.LENGTH_LONG).show();
+                    }
+                    else if (p.compareTo(c_p) != 0) {
                         Toast.makeText(RegesterActivity.this, "Password is not Matched", Toast.LENGTH_LONG).show();
                     }
                     else {
                         regester_user(u, e, p);
                     }
+                } catch (Exception ex) {
+                    Toast.makeText(RegesterActivity.this, "You Should be a Daffodilian. Please use Daffodil provide Email id.", Toast.LENGTH_LONG).show();
                 }
-                else{
-                    Toast.makeText(RegesterActivity.this, "something is missing", Toast.LENGTH_LONG).show();
-                }
-/*
-// you need to be a daffodilian...
-
-                if(!TextUtils.isEmpty(u) && !TextUtils.isEmpty(e) && !TextUtils.isEmpty(p)) {
-                    try {
-                        String substring = e.substring(e.length()-11, e.length());
-                        if(!substring.equals("@diu.edu.bd")) {
-                            Toast.makeText(RegesterActivity.this, "You Should be a Daffodilian. Please use Daffodil provide Email id.", Toast.LENGTH_LONG).show();
-                        }
-                        else if (p.compareTo(c_p) != 0) {
-                            Toast.makeText(RegesterActivity.this, "Password is not Matched", Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            regester_user(u, e, p);
-                        }
-                    } catch (Exception ex) {
-                        Toast.makeText(RegesterActivity.this, "You Should be a Daffodilian. Please use Daffodil provide Email id.", Toast.LENGTH_LONG).show();
-                    }
 
 
-                }
-                else{
-                    Toast.makeText(RegesterActivity.this, "something is missing", Toast.LENGTH_LONG).show();
-                }
-*/
+            }
+            else{
+                Toast.makeText(RegesterActivity.this, "something is missing", Toast.LENGTH_LONG).show();
+            }
             }
         });
 

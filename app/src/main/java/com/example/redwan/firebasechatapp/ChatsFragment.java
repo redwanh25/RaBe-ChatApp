@@ -201,7 +201,8 @@ public class ChatsFragment extends Fragment {
             userStatusView.setText(message);
 
             if(!isSeen){
-                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.BOLD);
+               // userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.BOLD);
+                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.BOLD_ITALIC);
             } else {
 
                 userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.NORMAL);

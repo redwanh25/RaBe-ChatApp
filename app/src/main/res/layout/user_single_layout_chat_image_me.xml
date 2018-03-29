@@ -3,27 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/message_text_layout_me"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/message_Image_layout_Me"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
         android:layout_marginEnd="11dp"
         android:layout_marginTop="6dp"
-        android:background="@drawable/sms_background_myself"
-        android:maxWidth="240dp"
-        android:padding="6dp"
-        android:text="TextView"
-        android:textColor="@color/cardview_dark_background"
-        android:textSize="16sp"
-        android:textIsSelectable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/time_For_Me"
+        android:id="@+id/time_For_Me_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="11dp"
@@ -31,6 +23,6 @@
         android:text="Mar 28, 2018  8:08:35 AM"
         android:textSize="9sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message_text_layout_me" />
+        app:layout_constraintTop_toBottomOf="@+id/message_Image_layout_Me" />
 
 </android.support.constraint.ConstraintLayout>

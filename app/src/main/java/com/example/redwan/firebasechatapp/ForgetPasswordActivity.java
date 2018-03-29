@@ -1,5 +1,6 @@
 package com.example.redwan.firebasechatapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private TextView email;
     private FirebaseAuth mFirebaseAuth;
     private Toolbar toolbar;
+    private ProgressDialog mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +37,30 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Forget Password");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mProgressBar = new ProgressDialog(this);
+
         fpass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userEmail = email.getText().toString().trim();
 
                 if(!userEmail.equals("")) {
+
+                    mProgressBar.setMessage("Please wait while we sending password reset email...");
+                    mProgressBar.setCanceledOnTouchOutside(false);
+                    mProgressBar.show();
+
                     mFirebaseAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
+                                mProgressBar.dismiss();
                                 Toast.makeText(ForgetPasswordActivity.this, "Email has been send", Toast.LENGTH_LONG).show();
                                 finish();
                             }
                             else {
                                 Toast.makeText(ForgetPasswordActivity.this, "Error", Toast.LENGTH_LONG).show();
+                                mProgressBar.dismiss();
                             }
                         }
                     });

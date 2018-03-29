@@ -191,6 +191,7 @@ public class SettingsActivity extends AppCompatActivity {
                         .compressToBitmap(thumb_filePath);
 
                 //for uploading thumb image to database
+
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 final byte[] thumb_byte = baos.toByteArray();

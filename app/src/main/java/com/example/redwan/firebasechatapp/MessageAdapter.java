@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,10 +46,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         View v = null;
         switch (viewType) {
             case 1:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout_chat_me,parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout_chat_me, parent, false);
                 break;
             case 2:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout_chat,parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout_chat, parent, false);
+                break;
+            case 3:
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout_chat_image_me, parent, false);
+                break;
+            case 4:
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout_chat_image, parent, false);
                 break;
         }
         return new MessageViewHolder(v);
@@ -63,61 +70,137 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Messages c = mMessageList.get(position);
         String fromUser = c.getFrom();
+        String message_type = c.getType();
+
         if(fromUser.equals(currentUser)) {
-            return 1;
+            if(message_type.equals("text")) {
+                return 1;
+            }
+            else if(message_type.equals("image")){
+                return 3;
+            }
+
         }
         else {
-            return 2;
+            if(message_type.equals("text")) {
+                return 2;
+            }
+            else if(message_type.equals("image")){
+                return 4;
+            }
         }
+        return position;
     }
-
-  //  4th
 
     @Override
     public void onBindViewHolder(final MessageViewHolder viewHolder, int i) {
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        Messages c = mMessageList.get(i);
+        final Messages c = mMessageList.get(i);
         String fromUser = c.getFrom();
+        String message_type = c.getType();
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(fromUser);
 
         if(fromUser.equals(currentUser)) {
-            viewHolder.messageTextMe.setBackgroundResource(R.drawable.sms_background_myself);
-            viewHolder.messageTextMe.setTextColor(Color.BLACK);
-            viewHolder.messageTextMe.setText(c.getMessage());
-            viewHolder.timeForMe.setText(c.getTime());
+
+            if(message_type.equals("text")) {
+
+                viewHolder.messageTextMe.setBackgroundResource(R.drawable.sms_background_myself);
+                viewHolder.messageTextMe.setTextColor(Color.BLACK);
+                viewHolder.messageTextMe.setText(c.getMessage());
+                viewHolder.timeForMe.setText(c.getTime());
+            }
+            else if(message_type.equals("image")){
+
+                viewHolder.timeForMeImage.setText(c.getTime());
+
+                Picasso.with(viewHolder.messageImageMe.getContext()).load(c.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(viewHolder.messageImageMe, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+                    @Override
+                    public void onError() {
+                        Picasso.with(viewHolder.messageImageMe.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar_default).into(viewHolder.messageImageMe);
+                    }
+                });
+            }
         }
         else {
-            viewHolder.messageText.setBackgroundResource(R.drawable.sms_background_others);
-            viewHolder.messageText.setTextColor(Color.WHITE);
-            viewHolder.messageText.setText(c.getMessage());
-            viewHolder.timeForOthers.setText(c.getTime());
 
-            mUserDatabase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+            if(message_type.equals("text")) {
 
-                    final String image = dataSnapshot.child("Thumb_image").getValue().toString();
+                viewHolder.messageText.setBackgroundResource(R.drawable.sms_background_others);
+                viewHolder.messageText.setTextColor(Color.WHITE);
+                viewHolder.messageText.setText(c.getMessage());
+                viewHolder.timeForOthers.setText(c.getTime());
 
-                    Picasso.with(viewHolder.profileImage.getContext()).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
+                mUserDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        }
-                        @Override
-                        public void onError() {
-                            Picasso.with(viewHolder.profileImage.getContext()).load(image).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage);
-                        }
-                    });
-                }
+                        final String image = dataSnapshot.child("Thumb_image").getValue().toString();
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                        Picasso.with(viewHolder.profileImage.getContext()).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage, new Callback() {
+                            @Override
+                            public void onSuccess() {
 
-                }
-            });
+                            }
+                            @Override
+                            public void onError() {
+                                Picasso.with(viewHolder.profileImage.getContext()).load(image).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+            else if(message_type.equals("image")){
+
+                viewHolder.timeForOthersImage.setText(c.getTime());
+
+                mUserDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        final String image = dataSnapshot.child("Thumb_image").getValue().toString();
+
+                        Picasso.with(viewHolder.profileImage_pic.getContext()).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage_pic, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+                            @Override
+                            public void onError() {
+                                Picasso.with(viewHolder.profileImage_pic.getContext()).load(image).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage_pic);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                Picasso.with(viewHolder.messageImage.getContext()).load(c.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(viewHolder.messageImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+                    @Override
+                    public void onError() {
+                        Picasso.with(viewHolder.messageImage.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar_default).into(viewHolder.messageImage);
+                    }
+                });
+
+            }
         }
 
     }
@@ -127,12 +210,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return mMessageList.size();
     }
 
-   // 3rd
-
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView messageText, messageTextMe, timeForOthers, timeForMe;
-        public CircleImageView profileImage;
+        public TextView messageText, messageTextMe, timeForOthers, timeForMe, timeForOthersImage, timeForMeImage;
+        public CircleImageView profileImage, profileImage_pic;
+        public ImageView messageImage, messageImageMe;
         public MessageViewHolder(View view) {
             super(view);
 
@@ -141,6 +223,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             messageTextMe = view.findViewById(R.id.message_text_layout_me);
             timeForMe = view.findViewById(R.id.time_For_Me);
             timeForOthers = view.findViewById(R.id.time_For_Others);
+            timeForMeImage = view.findViewById(R.id.time_For_Me_image);
+            timeForOthersImage = view.findViewById(R.id.time_For_Others_image);
+            messageImage = view.findViewById(R.id.message_Image_layout);
+            messageImageMe = view.findViewById(R.id.message_Image_layout_Me);
+            profileImage_pic = view.findViewById(R.id.message_profile_layout_pic);
 
         }
     }
