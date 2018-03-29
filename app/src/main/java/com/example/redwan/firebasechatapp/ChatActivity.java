@@ -1,7 +1,9 @@
 package com.example.redwan.firebasechatapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -19,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,7 +40,11 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,10 +53,11 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private static final int GALLERY_PICK = 1;
+    private static final int GALLERY_PIC = 2;
     private Toolbar toolbar;
     private String mChatUser, chatWithUserName;
     private DatabaseReference databaseReference;
@@ -71,11 +79,15 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayout;
     private MessageAdapter mAdapter;
 
+    private ProgressDialog mProgressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        mProgressBar = new ProgressDialog(this);
 
         mChatUser = getIntent().getStringExtra("key");
         chatWithUserName = getIntent().getStringExtra("user_name");
@@ -211,11 +223,15 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent galleryIntent = new Intent();
-                galleryIntent.setType("image/*");
-                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+//                Intent galleryIntent = new Intent();
+//                galleryIntent.setType("image/*");
+//                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+//
+//                startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), GALLERY_PIC);
 
-                startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), GALLERY_PICK);
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .start(ChatActivity.this);
 
             }
         });
@@ -226,70 +242,123 @@ public class ChatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALLERY_PICK && resultCode == RESULT_OK){
+//        if(requestCode == GALLERY_PIC && resultCode == RESULT_OK){
+//            Uri imageUri = data.getData();
+//            CropImage.activity(imageUri)
+//                    .setAspectRatio(1, 1)       // setAspectRatio(1, 1) aita hosse pic k square kore crop korar jonno.
+//                    //         .setMinCropWindowSize(200, 200)       // ai line dile code crash kore
+//                    .start(this);
+//        }
 
-            Uri imageUri = data.getData();
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-            final String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser;
-            final String chat_user_ref = "messages/" + mChatUser + "/" + mCurrentUserId;
+            if (resultCode == RESULT_OK) {
 
-            DatabaseReference user_message_push = mRootRef.child("messages")
-                    .child(mCurrentUserId).child(mChatUser).push();
+                mProgressBar.setTitle("Sending Image");
+                mProgressBar.setMessage("Please wait while we sending the image. when will be upload will will get Toast...");
+                mProgressBar.setCanceledOnTouchOutside(false);
+                mProgressBar.show();
 
-            final String push_id = user_message_push.getKey();
+                Uri imageUri = result.getUri();
+
+                final String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser;
+                final String chat_user_ref = "messages/" + mChatUser + "/" + mCurrentUserId;
+
+                DatabaseReference user_message_push = mRootRef.child("messages")
+                        .child(mCurrentUserId).child(mChatUser).push();
+
+                final String push_id = user_message_push.getKey();
+
+                File thumb_filePath = new File(imageUri.getPath());
+                Bitmap thumb_bitmap = new Compressor(this)
+                        .setMaxWidth(300)
+                        .setMaxHeight(200)
+                        .setQuality(500)
+                        .compressToBitmap(thumb_filePath);
+
+                //for uploading thumb image to database
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                final byte[] thumb_byte = baos.toByteArray();
 
 
-            StorageReference filepath = mImageStorage.child("message_images").child( push_id + ".jpg");
+                StorageReference filepath = mImageStorage.child("message_images").child(push_id + ".jpg");
+                final StorageReference thumb_store = mImageStorage.child("message_images").child("Thumb").child(push_id + ".jpg");
 
-            filepath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                filepath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
-                    if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
-                        String download_url = task.getResult().getDownloadUrl().toString();
-                        String date = DateFormat.getDateTimeInstance().format(new Date());
+                            UploadTask uploadTask = thumb_store.putBytes(thumb_byte);
 
-                        Map messageMap = new HashMap();
-                        messageMap.put("message", download_url);
-                        messageMap.put("seen", false);
-                        messageMap.put("type", "image");
-                        messageMap.put("time", date);
-                        messageMap.put("from", mCurrentUserId);
+                            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
 
-                        Map messageUserMap = new HashMap();
-                        messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
-                        messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
+                                    String download_url = thumb_task.getResult().getDownloadUrl().toString();
 
-                        mChatMessageView.getEditText().setText("");
+                                    if (thumb_task.isSuccessful()) {
 
-                        mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
-                        mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
+                                        String date = DateFormat.getDateTimeInstance().format(new Date());
 
-                        mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
-                        mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
+                                        Map messageMap = new HashMap();
+                                        messageMap.put("message", download_url);
+                                        messageMap.put("seen", false);
+                                        messageMap.put("type", "image");
+                                        messageMap.put("time", date);
+                                        messageMap.put("from", mCurrentUserId);
 
-                        mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        Map messageUserMap = new HashMap();
+                                        messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
+                                        messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
 
-                                if(databaseError != null){
+                                        mChatMessageView.getEditText().setText("");
 
-                                    Log.d("CHAT_LOG", databaseError.getMessage().toString());
+                                        mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
+                                        mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
 
+                                        mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
+                                        mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
+
+                                        mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
+                                            @Override
+                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                                                if (databaseError != null) {
+
+                                                    mProgressBar.dismiss();
+                                                    Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_LONG).show();
+                                                    Log.d("CHAT_LOG", databaseError.getMessage().toString());
+
+                                                } else {
+                                                    mProgressBar.dismiss();
+                                                    Toast.makeText(ChatActivity.this, "Image is send", Toast.LENGTH_LONG).show();
+                                                }
+
+                                            }
+                                        });
+
+                                    } else{
+
+                                    }
                                 }
-
-                            }
-                        });
-
-
+                            });
+                        }
+                        else{
+                            mProgressBar.dismiss();
+                            Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_LONG).show();
+                        }
                     }
+                });
 
-                }
-            });
-
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
         }
-
     }
 
     private void loadMessages() {

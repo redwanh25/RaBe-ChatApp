@@ -116,14 +116,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                 viewHolder.timeForMeImage.setText(c.getTime());
 
-                Picasso.with(viewHolder.messageImageMe.getContext()).load(c.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(viewHolder.messageImageMe, new Callback() {
+                Picasso.with(viewHolder.messageImageMe.getContext()).load(c.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(viewHolder.messageImageMe, new Callback() {
                     @Override
                     public void onSuccess() {
 
                     }
                     @Override
                     public void onError() {
-                        Picasso.with(viewHolder.messageImageMe.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar_default).into(viewHolder.messageImageMe);
+                        Picasso.with(viewHolder.messageImageMe.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar).into(viewHolder.messageImageMe);
                     }
                 });
             }
@@ -189,14 +189,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     }
                 });
 
-                Picasso.with(viewHolder.messageImage.getContext()).load(c.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(viewHolder.messageImage, new Callback() {
+                Picasso.with(viewHolder.messageImage.getContext()).load(c.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(viewHolder.messageImage, new Callback() {
                     @Override
                     public void onSuccess() {
 
                     }
                     @Override
                     public void onError() {
-                        Picasso.with(viewHolder.messageImage.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar_default).into(viewHolder.messageImage);
+                        Picasso.with(viewHolder.messageImage.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar).into(viewHolder.messageImage);
                     }
                 });
 
