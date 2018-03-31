@@ -14,8 +14,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-
     <ImageView
         android:layout_width="35dp"
         android:layout_height="22dp"
@@ -53,6 +51,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="394dp"
+        android:src="@drawable/id_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/textView4"
@@ -83,7 +90,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:backgroundTint="@android:color/white"
-            android:hint="User Id"
+            android:hint="User name"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:paddingLeft="55dp"
@@ -126,11 +133,11 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="28dp"
-        android:text="Register"
+        android:layout_marginTop="16dp"
         android:drawableLeft="@drawable/registering"
+        android:text="Register"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPass" />
+        app:layout_constraintTop_toBottomOf="@+id/varsityId" />
 
 
     <android.support.design.widget.TextInputLayout
@@ -185,6 +192,28 @@
             android:textColor="@color/cardview_dark_background"
             android:textColorHint="@color/cardview_light_background"
             android:textColorLink="@color/cardview_light_background" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/varsityId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/cardview_light_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPass">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@android:color/white"
+            android:hint="Varsity Id (Ex: 171-15-8557)"
+            android:maxLines="1"
+            android:paddingLeft="55dp"
+            android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>

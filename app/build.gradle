@@ -44,6 +44,10 @@ dependencies {
     compile 'id.zelory:compressor:2.0.0'
 //    compile 'com.squareup.okhttp3:okhttp:3.10.0'      // aita dile app crash kortese.
     compile 'com.squareup.okhttp:okhttp:2.5.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.0.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
 }
 
 

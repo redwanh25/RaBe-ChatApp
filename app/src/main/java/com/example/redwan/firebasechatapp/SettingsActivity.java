@@ -45,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseUser mFireBaseUser;
     private DatabaseReference mDatabaseReference;
     private TextView display;
-    private TextView c_status;
+    private TextView c_status, id;
     //    private CircleImageView proPic;
     private ImageView proPic;
     private ImageView coverPic, coverPicButton;
@@ -76,6 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
         proPic = findViewById(R.id.setting_image);
         changeStatus = findViewById(R.id.setting_changeStatusButton);
         changePic = findViewById(R.id.setting_changeImageButton);
+        id = findViewById(R.id.setting_displayId);
 //        coverPic = findViewById(R.id.setting_coverPic);
 //        coverPicButton = findViewById(R.id.setting_coverPicButton);
 
@@ -89,11 +90,13 @@ public class SettingsActivity extends AppCompatActivity {
                 String image = dataSnapshot.child("Image").getValue().toString();
                 String status = dataSnapshot.child("Status").getValue().toString();
                 String thumbImage = dataSnapshot.child("Thumb_image").getValue().toString();
+                String v_id = dataSnapshot.child("Id").getValue().toString();
 //                String coverPicture = dataSnapshot.child("Cover_picture").getValue().toString();
 //                String thumbCover = dataSnapshot.child("Thumb_coverpic").getValue().toString();
 
                 display.setText(name);
                 c_status.setText(status);
+                id.setText(v_id);
 
                 if(!thumbImage.equals("default")) {
                     Picasso.with(SettingsActivity.this).load(thumbImage).placeholder(R.drawable.avatar_default).into(proPic);

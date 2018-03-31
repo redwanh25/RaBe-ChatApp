@@ -30,7 +30,7 @@ import java.util.Date;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView display_name, display_status, total_frined;
+    private TextView display_name, display_status, total_frined, id;
     private ImageView profileImage_view;
     private Button sent_cancel_button, cancel_request_button;
 
@@ -58,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         sent_cancel_button = findViewById(R.id.sent_cancel);
         total_frined = findViewById(R.id.totalFriend);
         cancel_request_button = findViewById(R.id.cancel_frnd);
+        id = findViewById(R.id.profileId_view);
 
         user_database = FirebaseDatabase.getInstance().getReference().child("users").child(userKey);
 //        user_database.keepSynced(true);
@@ -85,9 +86,11 @@ public class ProfileActivity extends AppCompatActivity {
                 String name = dataSnapshot.child("Name").getValue().toString();
                 String status = dataSnapshot.child("Status").getValue().toString();
                 final String proPic = dataSnapshot.child("Thumb_image").getValue().toString();
+                String v_id = dataSnapshot.child("Id").getValue().toString();
 
                 display_name.setText(name);
                 display_status.setText(status);
+                id.setText(v_id);
 
                 if(!proPic.equals("default")) {
 //                    Picasso.with(ProfileActivity.this).load(proPic).placeholder(R.drawable.avatar_default).into(profileImage_view);

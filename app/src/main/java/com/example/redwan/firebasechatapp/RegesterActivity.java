@@ -25,7 +25,7 @@ import java.util.LinkedHashMap;
 
 public class RegesterActivity extends AppCompatActivity {
 
-    private TextInputLayout user, email, pass, c_pass;
+    private TextInputLayout user, email, pass, c_pass, varsityId;
     private Button button4;
     private FirebaseAuth mAuth;
     private ProgressDialog mProgress;
@@ -41,6 +41,8 @@ public class RegesterActivity extends AppCompatActivity {
         email = findViewById(R.id.email_id);
         pass = findViewById(R.id.password);
         c_pass = findViewById(R.id.confirmPass);
+        varsityId = findViewById(R.id.varsityId);
+
         button4 = findViewById(R.id.button4);
 
         mAuth = FirebaseAuth.getInstance();
@@ -59,6 +61,7 @@ public class RegesterActivity extends AppCompatActivity {
             String e = email.getEditText().getText().toString();
             String p = pass.getEditText().getText().toString();
             String c_p = c_pass.getEditText().getText().toString();
+            String v_i = varsityId.getEditText().getText().toString();
 /*
             if(!TextUtils.isEmpty(u) && !TextUtils.isEmpty(e) && !TextUtils.isEmpty(p)) {
                 if (p.compareTo(c_p) != 0) {
@@ -75,23 +78,52 @@ public class RegesterActivity extends AppCompatActivity {
 
 // you need to be a daffodilian...
 
-            if(!TextUtils.isEmpty(u) && !TextUtils.isEmpty(e) && !TextUtils.isEmpty(p)) {
+            if(!TextUtils.isEmpty(u) && !TextUtils.isEmpty(e) && !TextUtils.isEmpty(p) && !TextUtils.isEmpty(v_i)) {
+
+                String name = u;
+                Boolean check = false;
+                for(int i = 0; i < name.length(); i++) {
+                    if(!(name.charAt(i) >= 'a' && name.charAt(i) <= 'z') && !(name.charAt(i) >= 'A' && name.charAt(i) <= 'Z') && !(name.charAt(i) == ' ')) {
+                        check = true;
+                        break;
+                    }
+                }
+
+                String id = v_i;
+                Boolean check1 = false;
+                if(id.length() == 11) {
+                    for (int i = 0; i < id.length(); i++) {
+                        if (!(id.charAt(i) >= '0' && id.charAt(i) <= '9') && !(id.charAt(i) == '-')) {
+                            check1 = true;
+                            break;
+                        }
+                    }
+                }
+                else {
+                    check1 = true;
+                }
+
                 try {
                     String substring = e.substring(e.length()-11, e.length());
+
                     if(!substring.equals("@diu.edu.bd")) {
                         Toast.makeText(RegesterActivity.this, "You Should be a Daffodilian. Please use Daffodil provide Email id.", Toast.LENGTH_LONG).show();
+                    }
+                    else if(check) {
+                        Toast.makeText(RegesterActivity.this, "User name is not valid. use only A-Z, a-z or space", Toast.LENGTH_LONG).show();
                     }
                     else if (p.compareTo(c_p) != 0) {
                         Toast.makeText(RegesterActivity.this, "Password is not Matched", Toast.LENGTH_LONG).show();
                     }
+                    else if(check1) {
+                        Toast.makeText(RegesterActivity.this, "varsity id is not valid. Ex: 171-15-8557", Toast.LENGTH_LONG).show();
+                    }
                     else {
-                        regester_user(u, e, p);
+                        regester_user(u, e, p, v_i);
                     }
                 } catch (Exception ex) {
                     Toast.makeText(RegesterActivity.this, "You Should be a Daffodilian. Please use Daffodil provide Email id.", Toast.LENGTH_LONG).show();
                 }
-
-
             }
             else{
                 Toast.makeText(RegesterActivity.this, "something is missing", Toast.LENGTH_LONG).show();
@@ -100,7 +132,7 @@ public class RegesterActivity extends AppCompatActivity {
         });
 
     }
-    public void regester_user(final String u, String e, String p) {
+    public void regester_user(final String u, String e, String p, final String v_i) {
 
         mProgress.setMessage("Registering...");
         mProgress.setCanceledOnTouchOutside(false);
@@ -119,6 +151,7 @@ public class RegesterActivity extends AppCompatActivity {
                     user.put("Status", "Hi there, I'm using RaBe chat app");
                     user.put("Image", "default");   // https://firebasestorage.googleapis.com/v0/b/fir-chatapp-e2063.appspot.com/o/Profile%20picture%2F3xaEqAGgVAMOQv26aeUwOTslY8y2.jpg?alt=media&token=d289f042-c3df-4ced-b829-932940de47e0
                     user.put("Thumb_image", "default");
+                    user.put("Id", v_i);
 //                    user.put("Cover_picture", "default");
 //                    user.put("Thumb_coverpic", "default");
 

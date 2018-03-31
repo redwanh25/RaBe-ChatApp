@@ -33,10 +33,20 @@
         tools:layout_editor_absoluteX="102dp" />
 
     <TextView
+        android:id="@+id/profileId_view"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Varsity Id"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="18sp" />
+
+    <TextView
         android:id="@+id/profileStatus_view"
         android:layout_width="250dp"
         android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_weight="4"
         android:paddingTop="15dp"
         android:text="@string/default_status"
         android:textAlignment="center"

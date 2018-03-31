@@ -62,6 +62,16 @@
         tools:layout_editor_absoluteY="239dp" />
 
     <TextView
+        android:id="@+id/setting_displayId"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Varsity Id"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="18sp" />
+
+    <TextView
         android:id="@+id/setting_status"
         android:layout_width="250dp"
         android:layout_height="0dp"
