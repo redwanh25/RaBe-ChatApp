@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by redwan on 22-Mar-18.
  */
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder>{
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
 
     private List<Messages> mMessageList;
@@ -72,20 +73,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         String fromUser = c.getFrom();
         String message_type = c.getType();
 
-        if(fromUser.equals(currentUser)) {
-            if(message_type.equals("text")) {
+        if (fromUser.equals(currentUser)) {
+            if (message_type.equals("text")) {
                 return 1;
-            }
-            else if(message_type.equals("image")){
+            } else if (message_type.equals("image")) {
                 return 3;
             }
 
-        }
-        else {
-            if(message_type.equals("text")) {
+        } else {
+            if (message_type.equals("text")) {
                 return 2;
-            }
-            else if(message_type.equals("image")){
+            } else if (message_type.equals("image")) {
                 return 4;
             }
         }
@@ -103,16 +101,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(fromUser);
 
-        if(fromUser.equals(currentUser)) {
+        if (fromUser.equals(currentUser)) {
 
-            if(message_type.equals("text")) {
+            if (message_type.equals("text")) {
 
                 viewHolder.messageTextMe.setBackgroundResource(R.drawable.sms_background_myself);
                 viewHolder.messageTextMe.setTextColor(Color.BLACK);
                 viewHolder.messageTextMe.setText(c.getMessage());
                 viewHolder.timeForMe.setText(c.getTime());
-            }
-            else if(message_type.equals("image")){
+            } else if (message_type.equals("image")) {
 
                 viewHolder.timeForMeImage.setText(c.getTime());
 
@@ -121,16 +118,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     public void onSuccess() {
 
                     }
+
                     @Override
                     public void onError() {
                         Picasso.with(viewHolder.messageImageMe.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar).into(viewHolder.messageImageMe);
                     }
                 });
             }
-        }
-        else {
+        } else {
 
-            if(message_type.equals("text")) {
+            if (message_type.equals("text")) {
 
                 viewHolder.messageText.setBackgroundResource(R.drawable.sms_background_others);
                 viewHolder.messageText.setTextColor(Color.WHITE);
@@ -148,6 +145,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                             public void onSuccess() {
 
                             }
+
                             @Override
                             public void onError() {
                                 Picasso.with(viewHolder.profileImage.getContext()).load(image).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage);
@@ -160,8 +158,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                     }
                 });
-            }
-            else if(message_type.equals("image")){
+            } else if (message_type.equals("image")) {
 
                 viewHolder.timeForOthersImage.setText(c.getTime());
 
@@ -176,6 +173,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                             public void onSuccess() {
 
                             }
+
                             @Override
                             public void onError() {
                                 Picasso.with(viewHolder.profileImage_pic.getContext()).load(image).placeholder(R.drawable.avatar_default).into(viewHolder.profileImage_pic);
@@ -194,6 +192,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     public void onSuccess() {
 
                     }
+
                     @Override
                     public void onError() {
                         Picasso.with(viewHolder.messageImage.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar).into(viewHolder.messageImage);
@@ -215,6 +214,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public TextView messageText, messageTextMe, timeForOthers, timeForMe, timeForOthersImage, timeForMeImage;
         public CircleImageView profileImage, profileImage_pic;
         public ImageView messageImage, messageImageMe;
+
         public MessageViewHolder(View view) {
             super(view);
 
@@ -231,5 +231,4 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         }
     }
-
 }
