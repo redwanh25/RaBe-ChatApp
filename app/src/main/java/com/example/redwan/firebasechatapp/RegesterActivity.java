@@ -93,9 +93,35 @@ public class RegesterActivity extends AppCompatActivity {
                 Boolean check1 = false;
                 if(id.length() == 11) {
                     for (int i = 0; i < id.length(); i++) {
-                        if (!(id.charAt(i) >= '0' && id.charAt(i) <= '9') && !(id.charAt(i) == '-')) {
-                            check1 = true;
-                            break;
+                        if(i < 3) {
+                            if (!(id.charAt(i) >= '0' && id.charAt(i) <= '9')) {
+                                check1 = true;
+                                break;
+                            }
+                        }
+                        else if(i == 3) {
+                             if(!(id.charAt(i) == '-')){
+                                 check1 = true;
+                                 break;
+                            }
+                        }
+                        else if(i < 6) {
+                            if (!(id.charAt(i) >= '0' && id.charAt(i) <= '9')) {
+                                check1 = true;
+                                break;
+                            }
+                        }
+                        else if(i == 6) {
+                            if(!(id.charAt(i) == '-')){
+                                check1 = true;
+                                break;
+                            }
+                        }
+                        else if(i < 11) {
+                            if (!(id.charAt(i) >= '0' && id.charAt(i) <= '9')) {
+                                check1 = true;
+                                break;
+                            }
                         }
                     }
                 }
