@@ -1,6 +1,8 @@
 package com.example.redwan.firebasechatapp;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -80,6 +83,8 @@ public class ChatActivity extends AppCompatActivity {
     private MessageAdapter mAdapter;
 
     private ProgressDialog mProgressBar;
+    public int DELETE= 3;
+    public int COPY= 2;
 
 
     @Override
@@ -98,7 +103,7 @@ public class ChatActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         actionBar.setTitle(null);
- //       actionBar.setDisplayHomeAsUpEnabled(true);
+        //       actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -236,6 +241,22 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(item.getItemId() == 1) {
+            // Edit text
+
+            Toast.makeText(ChatActivity.this, "Edit text", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(item.getItemId() == 2) {
+            //delete message
+
+            Toast.makeText(ChatActivity.this, "Delete text", Toast.LENGTH_SHORT).show();
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

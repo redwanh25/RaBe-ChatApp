@@ -2,6 +2,7 @@ package com.example.redwan.firebasechatapp;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +39,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         this.mMessageList = mMessageList;
 
     }
-
     // 2nd
 
     @Override
@@ -201,7 +200,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             }
         }
-
     }
 
     @Override
@@ -209,11 +207,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return mMessageList.size();
     }
 
-    public static class MessageViewHolder extends RecyclerView.ViewHolder {
+    public static class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
 
         public TextView messageText, messageTextMe, timeForOthers, timeForMe, timeForOthersImage, timeForMeImage;
         public CircleImageView profileImage, profileImage_pic;
         public ImageView messageImage, messageImageMe;
+        public int EDIT= 1;
+        public int DELETE= 2;
 
         public MessageViewHolder(View view) {
             super(view);
@@ -228,7 +228,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             messageImage = view.findViewById(R.id.message_Image_layout);
             messageImageMe = view.findViewById(R.id.message_Image_layout_Me);
             profileImage_pic = view.findViewById(R.id.message_profile_layout_pic);
-
+            view.setOnCreateContextMenuListener(this);
+        }
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(0, EDIT, 0, "Edit");
+            menu.add(0, DELETE, 0, "Delete");
         }
     }
 }
