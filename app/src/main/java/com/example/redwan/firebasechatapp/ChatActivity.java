@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -218,9 +219,7 @@ public class ChatActivity extends AppCompatActivity {
         mChatSendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 sendMessage();
-
             }
         });
 
@@ -245,18 +244,63 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        String sms_id, sms, fromUser;
+        int position;
+        try {
+            position = mAdapter.getPosition();
+            sms_id = mAdapter.getSms_id();
+            sms = mAdapter.getSms();
+            fromUser = mAdapter.getFromUser();
+        } catch (Exception e) {
+            return super.onContextItemSelected(item);
+        }
+
         if(item.getItemId() == 1) {
             // Edit text
-
-            Toast.makeText(ChatActivity.this, "Edit text", Toast.LENGTH_SHORT).show();
+            if(messagesList.size()-1 == position && fromUser.equals(mCurrentUserId)){
+                 editMessage(sms, sms_id, position);
+            }
+ //           Toast.makeText(ChatActivity.this, position + " Edit text", Toast.LENGTH_SHORT).show();
         }
 
         else if(item.getItemId() == 2) {
             //delete message
-
-            Toast.makeText(ChatActivity.this, "Delete text", Toast.LENGTH_SHORT).show();
+            deleteMessage(sms_id, position);
         }
         return super.onContextItemSelected(item);
+    }
+    public void deleteMessage(String sms_id, final int position) {
+    //    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(mCurrentUserId).child(mChatUser);
+        String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + sms_id;
+        Map delete = new HashMap();
+        delete.put(current_user_ref, null);
+        mRootRef.updateChildren(delete, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                Toast.makeText(ChatActivity.this, " Delete text", Toast.LENGTH_SHORT).show();
+                messagesList.remove(position);
+                mAdapter.notifyItemRemoved(position);
+
+            }
+        });
+    }
+    public void editMessage(String sms, String sms_id, final int position) {
+        mChatMessageView.getEditText().setText(sms);
+        String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + sms_id;
+        String current_user_ref1 = "messages/" + mChatUser + "/" + mCurrentUserId + "/" + sms_id;
+        Map delete = new HashMap();
+        delete.put(current_user_ref, null);
+        delete.put(current_user_ref1, null);
+        mRootRef.updateChildren(delete, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                messagesList.remove(position);
+                mAdapter.notifyItemRemoved(position);
+
+            }
+        });
     }
 
     @Override
@@ -332,6 +376,7 @@ public class ChatActivity extends AppCompatActivity {
                                         messageMap.put("type", "image");
                                         messageMap.put("time", date);
                                         messageMap.put("from", mCurrentUserId);
+                                        messageMap.put("sms_id", push_id);
 
                                         Map messageUserMap = new HashMap();
                                         messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
@@ -438,6 +483,7 @@ public class ChatActivity extends AppCompatActivity {
             messageMap.put("type", "text");
             messageMap.put("time", date);
             messageMap.put("from", mCurrentUserId);
+            messageMap.put("sms_id", push_id);
 
             Map messageUserMap = new HashMap();
             messageUserMap.put(current_user_ref + "/" + push_id, messageMap);

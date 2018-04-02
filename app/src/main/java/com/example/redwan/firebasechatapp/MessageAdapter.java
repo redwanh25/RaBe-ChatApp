@@ -33,6 +33,34 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     private List<Messages> mMessageList;
     private String currentUser;
     private DatabaseReference mUserDatabase;
+    private String sms_id, sms, fromUser;
+    private int position;
+
+    public String getSms_id() {
+        return sms_id;
+    }
+    public int getPosition() {
+        return position;
+    }
+    public String getSms() {
+        return sms;
+    }
+
+    public void setSms_id(String sms_id) {
+        this.sms_id = sms_id;
+    }
+    public void setPosition(int position) {
+        this.position = position;
+    }
+    public void setSms(String sms) {
+        this.sms = sms;
+    }
+    public String getFromUser() {
+        return fromUser;
+    }
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
+    }
 
     public MessageAdapter(List<Messages> mMessageList) {
 
@@ -90,13 +118,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(final MessageViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final MessageViewHolder viewHolder, final int position) {
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        final Messages c = mMessageList.get(i);
-        String fromUser = c.getFrom();
+        final Messages c = mMessageList.get(position);
+        final String fromUser = c.getFrom();
+        final String sms = c.getMessage();
         String message_type = c.getType();
+        final String sms_id = c.getSms_id();
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(fromUser);
 
@@ -108,6 +138,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 viewHolder.messageTextMe.setTextColor(Color.BLACK);
                 viewHolder.messageTextMe.setText(c.getMessage());
                 viewHolder.timeForMe.setText(c.getTime());
+
+                viewHolder.messageTextMe.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        setSms_id(sms_id);
+                        setPosition(position);
+                        setSms(sms);
+                        setFromUser(fromUser);
+                        return false;
+                    }
+
+                });
+
             } else if (message_type.equals("image")) {
 
                 viewHolder.timeForMeImage.setText(c.getTime());
@@ -123,6 +166,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                         Picasso.with(viewHolder.messageImageMe.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar).into(viewHolder.messageImageMe);
                     }
                 });
+
+                viewHolder.messageImageMe.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        setSms_id(sms_id);
+                        setPosition(position);
+                        return false;
+                    }
+
+                });
+
             }
         } else {
 
@@ -157,6 +211,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                     }
                 });
+
+                viewHolder.messageText.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        setSms_id(sms_id);
+                        setPosition(position);
+                        setSms(sms);
+                        setFromUser(fromUser);
+                        return false;
+                    }
+
+                });
+
             } else if (message_type.equals("image")) {
 
                 viewHolder.timeForOthersImage.setText(c.getTime());
@@ -196,6 +263,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     public void onError() {
                         Picasso.with(viewHolder.messageImage.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar).into(viewHolder.messageImage);
                     }
+                });
+
+                viewHolder.messageImage.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        setSms_id(sms_id);
+                        setPosition(position);
+                        return false;
+                    }
+
                 });
 
             }
