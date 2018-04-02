@@ -143,6 +143,8 @@ public class ChatActivity extends AppCompatActivity {
 //        Thread thread = new Thread(new Runnable() {
 //            public void run() {
 
+                // for checking edited sms
+
                 DatabaseReference current = FirebaseDatabase.getInstance().getReference().child("messages").child(mCurrentUserId).child(mChatUser);
                 current.addValueEventListener(new ValueEventListener() {
                     @Override
