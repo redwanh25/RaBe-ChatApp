@@ -87,7 +87,6 @@ public class ChatActivity extends AppCompatActivity {
     public int DELETE= 3;
     public int COPY= 2;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +139,57 @@ public class ChatActivity extends AppCompatActivity {
 
         current = FirebaseAuth.getInstance().getCurrentUser();
         onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
+
+//        Thread thread = new Thread(new Runnable() {
+//            public void run() {
+
+                DatabaseReference current = FirebaseDatabase.getInstance().getReference().child("messages").child(mCurrentUserId).child(mChatUser);
+                current.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (final DataSnapshot data : dataSnapshot.getChildren()) {
+
+                            final int position = Integer.parseInt(data.child("position").getValue().toString());
+
+                            if (data.child("isEdit").getValue().toString().equals("true") && position != -1 ) {
+
+                                String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + data.getKey().toString();
+                                Map delete = new HashMap();
+                                delete.put(current_user_ref, null);
+
+
+                             //   Log.d("redwan", String.valueOf(position));
+
+                                mRootRef.updateChildren(delete, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                                        messagesList.remove(position);
+                                        mAdapter.notifyItemRemoved(position);
+
+                                    }
+                                });
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+//                try {
+//                    Thread.sleep(10000);
+//                } catch (Exception e) {
+//
+//                }
+//
+//            }
+//        });
+//
+//        thread.start();
 
         databaseReference.child("users").child(mChatUser).addValueEventListener(new ValueEventListener() {
             @Override
@@ -288,11 +338,14 @@ public class ChatActivity extends AppCompatActivity {
     public void editMessage(String sms, String sms_id, final int position) {
         mChatMessageView.getEditText().setText(sms);
         String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + sms_id;
-        String current_user_ref1 = "messages/" + mChatUser + "/" + mCurrentUserId + "/" + sms_id;
-        Map delete = new HashMap();
-        delete.put(current_user_ref, null);
-        delete.put(current_user_ref1, null);
-        mRootRef.updateChildren(delete, new DatabaseReference.CompletionListener() {
+
+        DatabaseReference current = FirebaseDatabase.getInstance().getReference().child("messages").child(mChatUser).child(mCurrentUserId).child(sms_id);
+        current.child("isEdit").setValue("true");
+        current.child("position").setValue(position);
+        Map edited = new HashMap();
+        edited.put(current_user_ref, null);
+
+        mRootRef.updateChildren(edited, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
@@ -484,6 +537,8 @@ public class ChatActivity extends AppCompatActivity {
             messageMap.put("time", date);
             messageMap.put("from", mCurrentUserId);
             messageMap.put("sms_id", push_id);
+            messageMap.put("isEdit", "false");
+            messageMap.put("position", -1);
 
             Map messageUserMap = new HashMap();
             messageUserMap.put(current_user_ref + "/" + push_id, messageMap);

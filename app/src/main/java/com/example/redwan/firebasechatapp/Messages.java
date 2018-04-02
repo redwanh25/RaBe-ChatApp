@@ -10,6 +10,8 @@ public class Messages {
     private boolean seen;
     private String from;
     private String sms_id;
+    private String isEdit;
+    private int position;
 
     public Messages(){
 
@@ -18,12 +20,14 @@ public class Messages {
         this.from = from;
     }
 
-    public Messages(String message, String type, String time, boolean seen, String sms_id) {
+    public Messages(String message, String type, String time, boolean seen, String sms_id, String isEdit, int position) {
         this.message = message;
         this.type = type;
         this.time = time;
         this.seen = seen;
         this.sms_id = sms_id;
+        this.isEdit = isEdit;
+        this.position = position;
     }
 
     public String getMessage() {
@@ -72,5 +76,18 @@ public class Messages {
 
     public void setSms_id(String sms_id) {
         this.sms_id = sms_id;
+    }
+
+    public String getIsEdit() {
+        return isEdit;
+    }
+    public void setIsEdit(String isEdit) {
+        this.isEdit = isEdit;
+    }
+    public int getPosition() {
+        return position;
+    }
+    public void setPosition(int position) {
+        this.position = position;
     }
 }
