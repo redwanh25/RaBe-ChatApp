@@ -152,8 +152,9 @@ public class ChatActivity extends AppCompatActivity {
                 for (final DataSnapshot data : dataSnapshot.getChildren()) {
 
                     final int position = Integer.parseInt(data.child("position").getValue().toString());
+                   // final int position = messagesList.indexOf(data.getKey());
 
-                    if (data.child("isEdit").getValue().toString().equals("true") && position != -1 ) {
+                    if (data.child("isEdit").getValue().toString().equals("true") && position != -1) {
 
                         String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + data.getKey().toString();
                         Map delete = new HashMap();
@@ -357,7 +358,6 @@ public class ChatActivity extends AppCompatActivity {
                 Toast.makeText(ChatActivity.this, String.valueOf(position) + " Delete text", Toast.LENGTH_SHORT).show();
                 messagesList.remove(position);
                 mAdapter.notifyItemRemoved(position);
-                recyclerViewChat.scrollToPosition(messagesList.size() - 1);
 
             }
         });
@@ -378,7 +378,6 @@ public class ChatActivity extends AppCompatActivity {
 
                 messagesList.remove(position);
                 mAdapter.notifyItemRemoved(position);
-                recyclerViewChat.scrollToPosition(messagesList.size() - 1);
 
             }
         });
