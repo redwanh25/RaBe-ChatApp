@@ -304,8 +304,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public CircleImageView profileImage, profileImage_pic;
         public ImageView messageImage, messageImageMe;
         public int COPY = 0;
-        public int EDIT= 1;
-        public int DELETE= 2;
+        public int DELETE= 1;
 
 
         public MessageViewHolder(View view) {
@@ -325,9 +324,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(0, COPY, 0, "Copy");
-            menu.add(0, EDIT, 0, "Edit");
-            menu.add(0, DELETE, 0, "Delete");
+            menu.add(0, COPY, 0, "Copy sms");
+            menu.add(0, DELETE, 0, "Delete sms from both side");
         }
     }
 }

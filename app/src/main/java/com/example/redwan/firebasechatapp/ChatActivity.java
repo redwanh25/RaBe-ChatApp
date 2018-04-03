@@ -152,9 +152,8 @@ public class ChatActivity extends AppCompatActivity {
                 for (final DataSnapshot data : dataSnapshot.getChildren()) {
 
                     final int position = Integer.parseInt(data.child("position").getValue().toString());
-                   // final int position = messagesList.indexOf(data.getKey());
 
-                    if (data.child("isEdit").getValue().toString().equals("true") && position != -1) {
+                    if (data.child("isDelete").getValue().toString().equals("true") && position != -1 ) {
 
                         String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + data.getKey().toString();
                         Map delete = new HashMap();
@@ -316,58 +315,55 @@ public class ChatActivity extends AppCompatActivity {
                     String text = sms;
                     ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
                     clipboard.setPrimaryClip(clip);
-                    Toast.makeText(ChatActivity.this, String.valueOf(position) + "Copy text", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatActivity.this, "Copy text", Toast.LENGTH_SHORT).show();
                 }
             }
             else {
-                Toast.makeText(ChatActivity.this, String.valueOf(position) + "You can not copy image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, "You can not copy image", Toast.LENGTH_SHORT).show();
             }
         }
 
-        if(item.getItemId() == 1) {
-            // Edit text
-            if(!smsType.equals("image")) {
-                if(messagesList.size()-1 == position && fromUser.equals(mCurrentUserId)){
-                    editMessage(sms, sms_id, position);
-                } else {
-                    Toast.makeText(ChatActivity.this, String.valueOf(position) + "You can edit only your last sms", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else {
-                Toast.makeText(ChatActivity.this, String.valueOf(position) + "You can not edit image", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        else if(item.getItemId() == 2) {
+        else if(item.getItemId() == 1) {
             //delete message
-            if (position!= -1){
-                deleteMessage(sms_id, position);
+            if(fromUser.equals(mCurrentUserId)){
+                deleteMessage(sms, sms_id, position);
+            } else {
+                Toast.makeText(ChatActivity.this, "You can not delete your friends sms", Toast.LENGTH_SHORT).show();
             }
         }
         return super.onContextItemSelected(item);
     }
-    public void deleteMessage(String sms_id, final int position) {
-        //    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(mCurrentUserId).child(mChatUser);
-        String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + sms_id;
-        Map delete = new HashMap();
-        delete.put(current_user_ref, null);
-        mRootRef.updateChildren(delete, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                Toast.makeText(ChatActivity.this, String.valueOf(position) + " Delete text", Toast.LENGTH_SHORT).show();
-                messagesList.remove(position);
-                mAdapter.notifyItemRemoved(position);
+// delete sms from me (one side)..
 
-            }
-        });
-    }
-    public void editMessage(String sms, String sms_id, final int position) {
-        mChatMessageView.getEditText().setText(sms);
+//    public void deleteMessage(String sms_id, final int position) {
+//        //    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(mCurrentUserId).child(mChatUser);
+//        String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + sms_id;
+//        Map delete = new HashMap();
+//        delete.put(current_user_ref, null);
+//        mRootRef.updateChildren(delete, new DatabaseReference.CompletionListener() {
+//            @Override
+//            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//
+//                Toast.makeText(ChatActivity.this, String.valueOf(position) + " Delete text", Toast.LENGTH_SHORT).show();
+//                messagesList.remove(position);
+//                mAdapter.notifyItemRemoved(position);
+//
+//            }
+//        });
+//    }
+
+
+// delete sms from both side..
+
+    public void deleteMessage(String sms, String sms_id, final int position) {
+
+    //    mChatMessageView.getEditText().setText(sms);
+
         String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + sms_id;
 
         DatabaseReference current = FirebaseDatabase.getInstance().getReference().child("messages").child(mChatUser).child(mCurrentUserId).child(sms_id);
-        current.child("isEdit").setValue("true");
+        current.child("isDelete").setValue("true");
         current.child("position").setValue(position);
         Map edited = new HashMap();
         edited.put(current_user_ref, null);
@@ -378,6 +374,8 @@ public class ChatActivity extends AppCompatActivity {
 
                 messagesList.remove(position);
                 mAdapter.notifyItemRemoved(position);
+
+                Toast.makeText(ChatActivity.this, " Sms has been deleted from both side", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -457,7 +455,7 @@ public class ChatActivity extends AppCompatActivity {
                                         messageMap.put("time", date);
                                         messageMap.put("from", mCurrentUserId);
                                         messageMap.put("sms_id", push_id);
-                                        messageMap.put("isEdit", "false");
+                                        messageMap.put("isDelete", "false");
                                         messageMap.put("position", -1);
 
                                         Map messageUserMap = new HashMap();
@@ -566,7 +564,7 @@ public class ChatActivity extends AppCompatActivity {
             messageMap.put("time", date);
             messageMap.put("from", mCurrentUserId);
             messageMap.put("sms_id", push_id);
-            messageMap.put("isEdit", "false");
+            messageMap.put("isDelete", "false");
             messageMap.put("position", -1);
 
             Map messageUserMap = new HashMap();
