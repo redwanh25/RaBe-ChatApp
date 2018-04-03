@@ -81,7 +81,7 @@ public class Messages {
     public String getIsDelete() {
         return isDelete;
     }
-    public void setIsDelete(String isEdit) {
+    public void setIsDelete(String isDelete) {
         this.isDelete = isDelete;
     }
     public int getPosition() {

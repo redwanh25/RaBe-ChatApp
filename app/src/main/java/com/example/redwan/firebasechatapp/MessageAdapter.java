@@ -183,6 +183,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     public boolean onLongClick(View v) {
                         setSms_id(sms_id);
                         setPosition(position);
+                        setFromUser(fromUser);
                         setSmsType("image");
                         return false;
                     }
@@ -283,6 +284,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     public boolean onLongClick(View v) {
                         setSms_id(sms_id);
                         setPosition(position);
+                        setFromUser(fromUser);
                         setSmsType("image");
                         return false;
                     }

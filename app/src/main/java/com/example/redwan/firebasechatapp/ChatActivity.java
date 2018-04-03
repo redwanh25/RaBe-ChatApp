@@ -325,6 +325,8 @@ public class ChatActivity extends AppCompatActivity {
 
         else if(item.getItemId() == 1) {
             //delete message
+
+                Log.d("redwanpagla", "done");
             if(fromUser.equals(mCurrentUserId)){
                 deleteMessage(sms, sms_id, position);
             } else {
@@ -365,10 +367,10 @@ public class ChatActivity extends AppCompatActivity {
         DatabaseReference current = FirebaseDatabase.getInstance().getReference().child("messages").child(mChatUser).child(mCurrentUserId).child(sms_id);
         current.child("isDelete").setValue("true");
         current.child("position").setValue(position);
-        Map edited = new HashMap();
-        edited.put(current_user_ref, null);
+        Map delete = new HashMap();
+        delete.put(current_user_ref, null);
 
-        mRootRef.updateChildren(edited, new DatabaseReference.CompletionListener() {
+        mRootRef.updateChildren(delete, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
