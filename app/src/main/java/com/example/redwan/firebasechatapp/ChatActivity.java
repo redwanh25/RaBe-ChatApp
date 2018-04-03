@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 import id.zelory.compressor.Compressor;
 
 public class ChatActivity extends AppCompatActivity {
@@ -74,7 +78,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private ImageButton mChatAddBtn;
     private ImageButton mChatSendBtn;
-    private TextInputLayout mChatMessageView;
+    //private TextInputLayout mChatMessageView;
     private String mCurrentUserId;
 
     private RecyclerView recyclerViewChat;
@@ -86,6 +90,11 @@ public class ChatActivity extends AppCompatActivity {
     private ProgressDialog mProgressBar;
     public int DELETE= 3;
     public int COPY= 2;
+
+    EmojiconEditText emojiconEditText;
+    ImageView emojiImageView;
+    View rootView;
+    EmojIconActions emojIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +130,7 @@ public class ChatActivity extends AppCompatActivity {
 
         mChatAddBtn = findViewById(R.id.chat_add_btn);
         mChatSendBtn = findViewById(R.id.chat_send_btn);
-        mChatMessageView = findViewById(R.id.chat_message_view);
+ //       mChatMessageView = findViewById(R.id.chat_message_view);
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mImageStorage = FirebaseStorage.getInstance().getReference();
         mCurrentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -133,6 +142,24 @@ public class ChatActivity extends AppCompatActivity {
         recyclerViewChat.setHasFixedSize(true);
         recyclerViewChat.setLayoutManager(mLinearLayout);
         recyclerViewChat.setAdapter(mAdapter);
+
+        rootView = findViewById(R.id.root_view);
+        emojiImageView = (ImageView) findViewById(R.id.emoji_btn);
+        emojiconEditText = (EmojiconEditText) findViewById(R.id.emojicon_edit_text);
+        emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiImageView);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setIconsIds(R.drawable.ic_action_keyboard, R.drawable.smiley);
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+
+            }
+
+            @Override
+            public void onKeyboardClose() {
+
+            }
+        });
 
         mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
         loadMessages();
@@ -233,7 +260,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                String message1 = mChatMessageView.getEditText().getText().toString();
+                String message1 = emojiconEditText.getText().toString();
 
                 if(!dataSnapshot.hasChild(mChatUser) && !TextUtils.isEmpty(message1)) {
 
@@ -463,7 +490,7 @@ public class ChatActivity extends AppCompatActivity {
                                         messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
                                         messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
 
-                                        mChatMessageView.getEditText().setText("");
+                                        emojiconEditText.setText("");
 
                                         mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
                                         mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
@@ -544,7 +571,7 @@ public class ChatActivity extends AppCompatActivity {
     private void sendMessage() {
 
 
-        String message = mChatMessageView.getEditText().getText().toString();
+        String message = emojiconEditText.getText().toString();
 
         if(!TextUtils.isEmpty(message)){
 
@@ -572,7 +599,7 @@ public class ChatActivity extends AppCompatActivity {
             messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
             messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
 
-            mChatMessageView.getEditText().setText("");
+            emojiconEditText.setText("");
 
             mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
             mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);

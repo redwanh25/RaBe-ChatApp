@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
     android:background="@drawable/rabe_wallpaper"
     tools:context="com.example.redwan.firebasechatapp.ChatActivity">
 
@@ -14,7 +16,7 @@
     <ImageButton
         android:id="@+id/chat_send_btn"
         android:layout_width="60dp"
-        android:layout_height="51dp"
+        android:layout_height="40dp"
         android:background="@drawable/chat_button"
         android:src="@drawable/sent_sms"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +25,7 @@
     <ImageButton
         android:id="@+id/chat_add_btn"
         android:layout_width="60dp"
-        android:layout_height="51dp"
+        android:layout_height="40dp"
         android:background="@drawable/chat_button"
         android:src="@drawable/add"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,39 +45,67 @@
         android:id="@+id/chat_recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/chat_message_view"
+        app:layout_constraintBottom_toTopOf="@+id/emojicon_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarId_chat"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/toolbarId_chat">
 
     </android.support.v7.widget.RecyclerView>
     <!--
          </android.support.v4.widget.SwipeRefreshLayout>
     -->
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/chat_message_view"
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:id="@+id/chat_message_view"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingTop="0dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/chat_send_btn"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/chat_add_btn">-->
+
+        <!--<android.support.design.widget.TextInputEditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="0dp"-->
+            <!--android:background="@drawable/sms_type"-->
+            <!--android:hint="Type a message..."-->
+            <!--android:maxLines="12"-->
+            <!--android:paddingBottom="7dp"-->
+            <!--android:paddingEnd="10dp"-->
+            <!--android:paddingStart="10dp"-->
+            <!--android:paddingTop="7dp" />-->
+    <!--</android.support.design.widget.TextInputLayout>-->
+
+    <ImageView
+        android:id="@+id/emoji_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:padding="4dp"
+        android:src="@drawable/emo_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/chat_add_btn" />
+
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+        android:id="@+id/emojicon_edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingTop="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/chat_input_design"
+        android:hint="Type a message"
+        android:maxLines="10"
+        android:paddingBottom="7dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="15dp"
+        android:paddingTop="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/chat_send_btn"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/chat_add_btn">
-
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:background="@drawable/sms_type"
-            android:hint="Type a message..."
-            android:maxLines="12"
-            android:paddingBottom="7dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:paddingTop="7dp" />
-    </android.support.design.widget.TextInputLayout>
+        app:layout_constraintStart_toEndOf="@+id/emoji_btn"
+        emojicon:emojiconSize="28sp" />
 
 
 </android.support.constraint.ConstraintLayout>
