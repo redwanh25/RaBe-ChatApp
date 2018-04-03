@@ -326,7 +326,6 @@ public class ChatActivity extends AppCompatActivity {
         else if(item.getItemId() == 1) {
             //delete message
 
-                Log.d("redwanpagla", "done");
             if(fromUser.equals(mCurrentUserId)){
                 deleteMessage(sms, sms_id, position);
             } else {
