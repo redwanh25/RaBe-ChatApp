@@ -296,28 +296,52 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        String sms_id, sms, fromUser;
-        int position;
+        String sms_id, sms, fromUser, smsType;
+        int position = -1;
         try {
             position = mAdapter.getPosition();
             sms_id = mAdapter.getSms_id();
             sms = mAdapter.getSms();
             fromUser = mAdapter.getFromUser();
+            smsType = mAdapter.getSmsType();
         } catch (Exception e) {
             return super.onContextItemSelected(item);
         }
 
+        if(item.getItemId() == 0) {
+            if(!smsType.equals("image")) {
+                if (position != -1) {
+                    ClipboardManager clipboard = (ClipboardManager) ChatActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                    String text = sms;
+                    ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(ChatActivity.this, String.valueOf(position) + "Copy text", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                Toast.makeText(ChatActivity.this, String.valueOf(position) + "You can not copy image", Toast.LENGTH_SHORT).show();
+            }
+        }
+
         if(item.getItemId() == 1) {
             // Edit text
-            if(messagesList.size()-1 == position && fromUser.equals(mCurrentUserId)){
-                editMessage(sms, sms_id, position);
+            if(!smsType.equals("image")) {
+                if(messagesList.size()-1 == position && fromUser.equals(mCurrentUserId)){
+                    editMessage(sms, sms_id, position);
+                } else {
+                    Toast.makeText(ChatActivity.this, String.valueOf(position) + "You can edit only your last sms", Toast.LENGTH_SHORT).show();
+                }
             }
-            //           Toast.makeText(ChatActivity.this, position + " Edit text", Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(ChatActivity.this, String.valueOf(position) + "You can not edit image", Toast.LENGTH_SHORT).show();
+            }
         }
 
         else if(item.getItemId() == 2) {
             //delete message
-            deleteMessage(sms_id, position);
+            if (position!= -1){
+                deleteMessage(sms_id, position);
+            }
         }
         return super.onContextItemSelected(item);
     }
@@ -330,9 +354,10 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                Toast.makeText(ChatActivity.this, " Delete text", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, String.valueOf(position) + " Delete text", Toast.LENGTH_SHORT).show();
                 messagesList.remove(position);
                 mAdapter.notifyItemRemoved(position);
+                recyclerViewChat.scrollToPosition(messagesList.size() - 1);
 
             }
         });
@@ -353,6 +378,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 messagesList.remove(position);
                 mAdapter.notifyItemRemoved(position);
+                recyclerViewChat.scrollToPosition(messagesList.size() - 1);
 
             }
         });
@@ -432,6 +458,8 @@ public class ChatActivity extends AppCompatActivity {
                                         messageMap.put("time", date);
                                         messageMap.put("from", mCurrentUserId);
                                         messageMap.put("sms_id", push_id);
+                                        messageMap.put("isEdit", "false");
+                                        messageMap.put("position", -1);
 
                                         Map messageUserMap = new HashMap();
                                         messageUserMap.put(current_user_ref + "/" + push_id, messageMap);

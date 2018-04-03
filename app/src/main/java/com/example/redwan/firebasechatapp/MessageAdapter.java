@@ -33,34 +33,44 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     private List<Messages> mMessageList;
     private String currentUser;
     private DatabaseReference mUserDatabase;
-    private String sms_id, sms, fromUser;
+    private String sms_id, sms, fromUser, smsType;
     private int position;
 
+    public void setSms_id(String sms_id) {
+        this.sms_id = sms_id;
+    }
     public String getSms_id() {
         return sms_id;
     }
-    public int getPosition() {
-        return position;
+
+    public void setSms(String sms) {
+        this.sms = sms;
     }
     public String getSms() {
         return sms;
     }
 
-    public void setSms_id(String sms_id) {
-        this.sms_id = sms_id;
-    }
-    public void setPosition(int position) {
-        this.position = position;
-    }
-    public void setSms(String sms) {
-        this.sms = sms;
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
     }
     public String getFromUser() {
         return fromUser;
     }
-    public void setFromUser(String fromUser) {
-        this.fromUser = fromUser;
+
+    public void setSmsType(String smsType) {
+        this.smsType = smsType;
     }
+    public String getSmsType() {
+        return smsType;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+    public int getPosition() {
+        return position;
+    }
+
 
     public MessageAdapter(List<Messages> mMessageList) {
 
@@ -146,6 +156,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                         setPosition(position);
                         setSms(sms);
                         setFromUser(fromUser);
+                        setSmsType("text");
                         return false;
                     }
 
@@ -172,6 +183,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     public boolean onLongClick(View v) {
                         setSms_id(sms_id);
                         setPosition(position);
+                        setSmsType("image");
                         return false;
                     }
 
@@ -219,6 +231,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                         setPosition(position);
                         setSms(sms);
                         setFromUser(fromUser);
+                        setSmsType("text");
                         return false;
                     }
 
@@ -270,6 +283,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     public boolean onLongClick(View v) {
                         setSms_id(sms_id);
                         setPosition(position);
+                        setSmsType("image");
                         return false;
                     }
 
@@ -289,8 +303,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public TextView messageText, messageTextMe, timeForOthers, timeForMe, timeForOthersImage, timeForMeImage;
         public CircleImageView profileImage, profileImage_pic;
         public ImageView messageImage, messageImageMe;
+        public int COPY = 0;
         public int EDIT= 1;
         public int DELETE= 2;
+
 
         public MessageViewHolder(View view) {
             super(view);
@@ -309,6 +325,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(0, COPY, 0, "Copy");
             menu.add(0, EDIT, 0, "Edit");
             menu.add(0, DELETE, 0, "Delete");
         }
