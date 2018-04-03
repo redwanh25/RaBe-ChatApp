@@ -143,44 +143,44 @@ public class ChatActivity extends AppCompatActivity {
 //        Thread thread = new Thread(new Runnable() {
 //            public void run() {
 
-                // for checking edited sms
+        // for checking edited sms
 
-                DatabaseReference current = FirebaseDatabase.getInstance().getReference().child("messages").child(mCurrentUserId).child(mChatUser);
-                current.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (final DataSnapshot data : dataSnapshot.getChildren()) {
+        DatabaseReference current = FirebaseDatabase.getInstance().getReference().child("messages").child(mCurrentUserId).child(mChatUser);
+        current.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (final DataSnapshot data : dataSnapshot.getChildren()) {
 
-                            final int position = Integer.parseInt(data.child("position").getValue().toString());
+                    final int position = Integer.parseInt(data.child("position").getValue().toString());
 
-                            if (data.child("isEdit").getValue().toString().equals("true") && position != -1 ) {
+                    if (data.child("isEdit").getValue().toString().equals("true") && position != -1 ) {
 
-                                String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + data.getKey().toString();
-                                Map delete = new HashMap();
-                                delete.put(current_user_ref, null);
+                        String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + data.getKey().toString();
+                        Map delete = new HashMap();
+                        delete.put(current_user_ref, null);
 
 
-                             //   Log.d("redwan", String.valueOf(position));
+                        //   Log.d("redwan", String.valueOf(position));
 
-                                mRootRef.updateChildren(delete, new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        mRootRef.updateChildren(delete, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                                        messagesList.remove(position);
-                                        mAdapter.notifyItemRemoved(position);
-
-                                    }
-                                });
+                                messagesList.remove(position);
+                                mAdapter.notifyItemRemoved(position);
 
                             }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        });
 
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 //                try {
 //                    Thread.sleep(10000);
@@ -310,9 +310,9 @@ public class ChatActivity extends AppCompatActivity {
         if(item.getItemId() == 1) {
             // Edit text
             if(messagesList.size()-1 == position && fromUser.equals(mCurrentUserId)){
-                 editMessage(sms, sms_id, position);
+                editMessage(sms, sms_id, position);
             }
- //           Toast.makeText(ChatActivity.this, position + " Edit text", Toast.LENGTH_SHORT).show();
+            //           Toast.makeText(ChatActivity.this, position + " Edit text", Toast.LENGTH_SHORT).show();
         }
 
         else if(item.getItemId() == 2) {
@@ -322,7 +322,7 @@ public class ChatActivity extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
     public void deleteMessage(String sms_id, final int position) {
-    //    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(mCurrentUserId).child(mChatUser);
+        //    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(mCurrentUserId).child(mChatUser);
         String current_user_ref = "messages/" + mCurrentUserId + "/" + mChatUser + "/" + sms_id;
         Map delete = new HashMap();
         delete.put(current_user_ref, null);

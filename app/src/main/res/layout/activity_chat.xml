@@ -29,31 +29,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-<!--
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout_chat"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/chat_send_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarId_chat">
--->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/chat_recyclerView"
+    <!--
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout_chat"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/chat_message_view"
+            app:layout_constraintBottom_toTopOf="@+id/chat_send_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarId_chat"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/toolbarId_chat">
+    -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chat_recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/chat_message_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarId_chat"
+        app:layout_constraintVertical_bias="0.0">
 
-        </android.support.v7.widget.RecyclerView>
-<!--
-     </android.support.v4.widget.SwipeRefreshLayout>
--->
+    </android.support.v7.widget.RecyclerView>
+    <!--
+         </android.support.v4.widget.SwipeRefreshLayout>
+    -->
     <android.support.design.widget.TextInputLayout
         android:id="@+id/chat_message_view"
         android:layout_width="0dp"
