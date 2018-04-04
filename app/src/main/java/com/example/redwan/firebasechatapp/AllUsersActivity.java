@@ -219,7 +219,7 @@ public class AllUsersActivity extends AppCompatActivity implements SearchView.On
         }
     }
 
-    // realtime  niye kdatabaseaj korle "onStart()" method likhte hobe.
+    // realtime database neye kaj korle "onStart()" method likhte hobe.
     // Firebase UI
     @Override
     public void onStart() {
