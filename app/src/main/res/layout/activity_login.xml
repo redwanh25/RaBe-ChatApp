@@ -144,11 +144,14 @@
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="141dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/button_design_1"
         android:drawableLeft="@drawable/signin_button"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
         android:text="Sign In"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pass_editText" />
