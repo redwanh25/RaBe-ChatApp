@@ -31,18 +31,27 @@
 
     <Button
         android:id="@+id/have"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
+        android:layout_width="258dp"
+        android:layout_height="45dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_design_1"
         android:drawableLeft="@drawable/smiling_face"
-        android:text="already have account" />
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:text="already have account"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/not"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
+        android:layout_width="258dp"
+        android:layout_height="45dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/button_design_2"
         android:drawableLeft="@drawable/account_button"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
         android:text="Create a new account?" />
 
 
@@ -54,7 +63,7 @@
         android:layout_weight="1"
         android:text="Forget password?"
         android:textColor="@android:color/holo_red_light"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
 
 
