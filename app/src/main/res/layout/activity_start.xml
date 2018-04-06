@@ -52,7 +52,7 @@
         android:drawableLeft="@drawable/account_button"
         android:paddingEnd="20dp"
         android:paddingStart="20dp"
-        android:text="Create a new account?" />
+        android:text="Create a new account" />
 
 
     <TextView
@@ -63,7 +63,7 @@
         android:layout_weight="1"
         android:text="Forget password?"
         android:textColor="@android:color/holo_red_light"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
 
 
