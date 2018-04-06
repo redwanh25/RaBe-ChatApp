@@ -2,7 +2,9 @@ package com.example.redwan.firebasechatapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private DatabaseReference onlineDatabase;
     private FirebaseUser current;
 
+    ConstraintLayout constraintLayout;
+    AnimationDrawable animationDrawable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        constraintLayout = findViewById(R.id.myLayout_password);
+        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
 
         current = FirebaseAuth.getInstance().getCurrentUser();
         onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");

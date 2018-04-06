@@ -2,7 +2,9 @@ package com.example.redwan.firebasechatapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +25,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ProgressDialog mProgressBar;
 
+    ConstraintLayout constraintLayout;
+    AnimationDrawable animationDrawable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,12 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Forget Password");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        constraintLayout = findViewById(R.id.myLayout_forget);
+        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
 
         mProgressBar = new ProgressDialog(this);
 

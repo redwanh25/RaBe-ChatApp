@@ -1,12 +1,14 @@
 package com.example.redwan.firebasechatapp;
 
 import android.app.ProgressDialog;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private DatabaseReference onlineDatabase;
     private FirebaseUser current;
+    LinearLayout linearLayout;
+    AnimationDrawable animationDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         cancel_request_button.setVisibility(View.INVISIBLE);
         cancel_request_button.setEnabled(false);
+
+        linearLayout = findViewById(R.id.myLayout_profile);
+        animationDrawable = (AnimationDrawable) linearLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
 
         current = FirebaseAuth.getInstance().getCurrentUser();
         onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");

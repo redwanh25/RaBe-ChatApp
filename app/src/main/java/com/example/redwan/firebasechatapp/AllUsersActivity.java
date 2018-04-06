@@ -2,6 +2,7 @@ package com.example.redwan.firebasechatapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,9 @@ public class AllUsersActivity extends AppCompatActivity implements SearchView.On
     private String ck = "name";
     private int check = 1;
 
+    RelativeLayout relativeLayout;
+    AnimationDrawable animationDrawable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +85,12 @@ public class AllUsersActivity extends AppCompatActivity implements SearchView.On
         mResultList = (RecyclerView) findViewById(R.id.all_Users_RecyclerView);
         mResultList.setHasFixedSize(true);
         mResultList.setLayoutManager(new LinearLayoutManager(this));
+
+        relativeLayout = findViewById(R.id.myLayout_allusers);
+        animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
 
     }
 

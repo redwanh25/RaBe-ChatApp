@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
+    android:background="@drawable/animation_main_file"
+    android:id="@+id/myLayout_profile"
     tools:context="com.example.redwan.firebasechatapp.ProfileActivity"
     tools:layout_editor_absoluteY="25dp"
     android:orientation="vertical"
@@ -27,7 +28,7 @@
         android:layout_weight="2"
         android:gravity="bottom|center"
         android:text="Display Name"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@android:color/background_dark"
         android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@+id/profilePic_view"
         tools:layout_editor_absoluteX="102dp" />
@@ -39,7 +40,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Varsity Id"
-        android:textColor="@android:color/holo_orange_dark"
+        android:textColor="@android:color/background_light"
         android:textSize="18sp" />
 
     <TextView
@@ -60,25 +61,25 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:text="Total Friends"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@android:color/holo_purple"
         android:textSize="18sp"
         tools:layout_editor_absoluteX="102dp"
         tools:layout_editor_absoluteY="361dp" />
 
     <Button
         android:id="@+id/sent_cancel"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="45dp"
         android:text="Send Friend Request"
-        tools:layout_editor_absoluteX="36dp"
-        tools:layout_editor_absoluteY="386dp" />
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_design_2" />
 
     <Button
         android:id="@+id/cancel_frnd"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="cancel  friend request"
-        tools:layout_editor_absoluteX="109dp"
-        tools:layout_editor_absoluteY="449dp" />
+        android:layout_width="220dp"
+        android:layout_height="45dp"
+        android:text="Cancel Friend Request"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_design_2"  />
 
 </LinearLayout>
