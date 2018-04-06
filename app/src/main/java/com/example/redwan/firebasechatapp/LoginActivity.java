@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextInputLayout email, pass;
+    private EditText email, pass;
     private Button button;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -71,22 +72,28 @@ public class LoginActivity extends AppCompatActivity {
     }
     
     public void startSignIn() {
-        String ema = email.getEditText().getText().toString();
-        String pas = pass.getEditText().getText().toString();
+        String ema = email.getText().toString();
+        String pas = pass.getText().toString();
         if(!TextUtils.isEmpty(ema) && !TextUtils.isEmpty(pas)) {
-            mprogress.setMessage("Sign in...");
-            mprogress.setCanceledOnTouchOutside(false);
-            mprogress.show();
-            mAuth.signInWithEmailAndPassword(ema, pas).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (!task.isSuccessful()) {
+
+            if(pas.length() < 6 ){
+                Toast.makeText(LoginActivity.this, "Password Should be At least 6 characters", Toast.LENGTH_LONG).show();
+            }
+            else {
+                mprogress.setMessage("Sign in...");
+                mprogress.setCanceledOnTouchOutside(false);
+                mprogress.show();
+                mAuth.signInWithEmailAndPassword(ema, pas).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            mprogress.cancel();
+                            Toast.makeText(LoginActivity.this, "Email or Password is wrong", Toast.LENGTH_LONG).show();
+                        }
                         mprogress.cancel();
-                        Toast.makeText(LoginActivity.this, "Email or Password is wrong", Toast.LENGTH_LONG).show();
                     }
-                    mprogress.cancel();
-                }
-            });
+                });
+            }
         }
         else{
             Toast.makeText(LoginActivity.this, "Email or Password is missing", Toast.LENGTH_LONG).show();

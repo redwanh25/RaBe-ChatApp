@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,7 +26,7 @@ import java.util.LinkedHashMap;
 
 public class RegesterActivity extends AppCompatActivity {
 
-    private TextInputLayout user, email, pass, c_pass, varsityId;
+    private EditText user, email, pass, c_pass, varsityId;
     private Button button4;
     private FirebaseAuth mAuth;
     private ProgressDialog mProgress;
@@ -57,11 +58,11 @@ public class RegesterActivity extends AppCompatActivity {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            String u = user.getEditText().getText().toString();
-            String e = email.getEditText().getText().toString();
-            String p = pass.getEditText().getText().toString();
-            String c_p = c_pass.getEditText().getText().toString();
-            String v_i = varsityId.getEditText().getText().toString();
+            String u = user.getText().toString();
+            String e = email.getText().toString();
+            String p = pass.getText().toString();
+            String c_p = c_pass.getText().toString();
+            String v_i = varsityId.getText().toString();
 /*
             if(!TextUtils.isEmpty(u) && !TextUtils.isEmpty(e) && !TextUtils.isEmpty(p)) {
                 if (p.compareTo(c_p) != 0) {
@@ -137,6 +138,9 @@ public class RegesterActivity extends AppCompatActivity {
                     }
                     else if(check) {
                         Toast.makeText(RegesterActivity.this, "User name is not valid. use only A-Z, a-z or space", Toast.LENGTH_LONG).show();
+                    }
+                    else if(p.length() < 6 ) {
+                            Toast.makeText(RegesterActivity.this, "Password Should be At least 6 characters", Toast.LENGTH_LONG).show();
                     }
                     else if (p.compareTo(c_p) != 0) {
                         Toast.makeText(RegesterActivity.this, "Password is not Matched", Toast.LENGTH_LONG).show();

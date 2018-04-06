@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,7 +23,7 @@ import com.google.firebase.database.ServerValue;
 public class ChangeStatus extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private TextInputLayout status;
+    private EditText status;
     private Button change;
     private ProgressDialog progress;
 
@@ -60,7 +61,7 @@ public class ChangeStatus extends AppCompatActivity {
                 progress.setTitle("Saving change");
                 progress.setMessage("Please wait...");
                 progress.show();
-                String s_tatus = status.getEditText().getText().toString();
+                String s_tatus = status.getText().toString();
                 mDatabaseReference.child("Status").setValue(s_tatus).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

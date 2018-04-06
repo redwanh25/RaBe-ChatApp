@@ -24,7 +24,7 @@ import com.google.firebase.database.ServerValue;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private TextInputLayout change_password;
+    private EditText change_password;
     private Button change_password_button;
     private FirebaseUser firebaseUser;
     private ProgressDialog progressDialog;
@@ -54,8 +54,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         change_password_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newPass = change_password.getEditText().getText().toString();
-                if(newPass.length() >= 6){
+                String newPass = change_password.getText().toString();
+                if(newPass.length() < 6){
+                    Toast.makeText(ChangePasswordActivity.this, "Password should be At least 6 characters", Toast.LENGTH_LONG).show();
+                }
+                else {
                     progressDialog.setMessage("changing your password...");
                     progressDialog.show();
                     firebaseUser.updatePassword(newPass).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -73,9 +76,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             }
                         }
                     });
-                }
-                else {
-                    Toast.makeText(ChangePasswordActivity.this, "Password should be At least 6 characters", Toast.LENGTH_LONG).show();
                 }
             }
         });
