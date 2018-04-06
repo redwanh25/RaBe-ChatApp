@@ -138,12 +138,12 @@ public class RequestFragment extends Fragment {
                                                                 @Override
                                                                 public void onSuccess(Void aVoid) {
 
-                                                                friendRequest_database.child(uId).child(userKey).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void aVoid) {
-                                                                        Toast.makeText(getContext(), "Request has been Received", Toast.LENGTH_LONG).show();
-                                                                    }
-                                                                });
+                                                                    friendRequest_database.child(uId).child(userKey).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void aVoid) {
+                                                                            Toast.makeText(getContext(), "Request has been Received", Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    });
                                                                 }
                                                             });
                                                         }
@@ -165,17 +165,17 @@ public class RequestFragment extends Fragment {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
 
-                                            if(task.isSuccessful()) {
-                                                friendRequest_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        Toast.makeText(getContext(), "Request Cancel", Toast.LENGTH_LONG).show();
-                                                    }
-                                                });
-                                            }
-                                            else {
-                                                Toast.makeText(getContext(), "Request Cancel Failed", Toast.LENGTH_LONG).show();
-                                            }
+                                                if(task.isSuccessful()) {
+                                                    friendRequest_database.child(userKey).child(uId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Toast.makeText(getContext(), "Request Cancel", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    Toast.makeText(getContext(), "Request Cancel Failed", Toast.LENGTH_LONG).show();
+                                                }
                                             }
                                         });
 

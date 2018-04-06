@@ -1,16 +1,69 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.redwan.firebasechatapp.FriendsFragment">
 
+    <!-- TODO: Update blank fragment layout -->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/friendsList_section"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
     </android.support.v7.widget.RecyclerView>
+
+<!--
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/friendsList_section"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText_f">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <EditText
+            android:id="@+id/editText_f"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/chat_input_design"
+            android:ems="10"
+            android:hint="Search friend"
+            android:inputType="textPersonName"
+            android:paddingBottom="6dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingTop="6dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton_f"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton_f"
+            android:layout_width="50dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="6dp"
+            android:background="#00ffffff"
+            android:src="@drawable/search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+-->
+
 
 </FrameLayout>

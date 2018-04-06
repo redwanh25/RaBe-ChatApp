@@ -72,7 +72,7 @@ public class ChatActivity extends AppCompatActivity {
     private TextView chatUserName, chatOnlineStatus;
     private CircleImageView chatProfilePic;
 
-    private DatabaseReference onlineDatabase, mRootRef;
+    private DatabaseReference onlineDatabase, mRootRef, mRootRefUser;
     private FirebaseUser current;
     private StorageReference mImageStorage;
 
@@ -132,6 +132,7 @@ public class ChatActivity extends AppCompatActivity {
         mChatSendBtn = findViewById(R.id.chat_send_btn);
  //       mChatMessageView = findViewById(R.id.chat_message_view);
         mRootRef = FirebaseDatabase.getInstance().getReference();
+        mRootRefUser = FirebaseDatabase.getInstance().getReference("users");
         mImageStorage = FirebaseStorage.getInstance().getReference();
         mCurrentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -161,7 +162,20 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
+        mRootRef.child("Chat").child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
+                   if(dataSnapshot.hasChild(mChatUser)) {
+                       mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
+                   }
+               }
+
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
+
+               }
+         });
+
         loadMessages();
 
         current = FirebaseAuth.getInstance().getCurrentUser();
@@ -264,26 +278,82 @@ public class ChatActivity extends AppCompatActivity {
 
                 if(!dataSnapshot.hasChild(mChatUser) && !TextUtils.isEmpty(message1)) {
 
-                    Map chatAddMap = new HashMap();
-                    chatAddMap.put("seen", false);
-                    chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
+//                    Map chatAddMap = new HashMap();
+//                    chatAddMap.put("seen", false);
+//                    chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
+//
+//                    Map chatUserMap = new HashMap();
+//                    chatUserMap.put("Chat/" + mCurrentUserId + "/" + mChatUser, chatAddMap);
+//                    chatUserMap.put("Chat/" + mChatUser + "/" + mCurrentUserId, chatAddMap);
+//
+//                    mRootRef.updateChildren(chatUserMap, new DatabaseReference.CompletionListener() {
+//                        @Override
+//                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//
+//                            if (databaseError != null) {
+//
+//                                Log.d("CHAT_LOG", databaseError.getMessage().toString());
+//
+//                            }
+//
+//                        }
+//                    });
 
-                    Map chatUserMap = new HashMap();
-                    chatUserMap.put("Chat/" + mCurrentUserId + "/" + mChatUser, chatAddMap);
-                    chatUserMap.put("Chat/" + mChatUser + "/" + mCurrentUserId, chatAddMap);
-
-                    mRootRef.updateChildren(chatUserMap, new DatabaseReference.CompletionListener() {
+                    mRootRefUser.child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String name = dataSnapshot.child("Name").getValue().toString();
 
-                            if (databaseError != null) {
+                            final Map user = new HashMap();
+                            user.put("name", name);
+                            user.put("seen", false);
+                            user.put("timestamp", ServerValue.TIMESTAMP);
 
-                                Log.d("CHAT_LOG", databaseError.getMessage().toString());
+                            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
 
-                            }
+                                    if (task.isSuccessful()) {
+
+                                    }
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
                         }
                     });
+
+                    mRootRefUser.child(mChatUser).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String name1 = dataSnapshot.child("Name").getValue().toString();
+
+                            final Map user1 = new HashMap();
+                            user1.put("name", name1);
+                            user1.put("seen", false);
+                            user1.put("timestamp", ServerValue.TIMESTAMP);
+
+                            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (task.isSuccessful()) {
+
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
 
             }
@@ -470,55 +540,111 @@ public class ChatActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
 
-                                    String download_url = thumb_task.getResult().getDownloadUrl().toString();
+                                String download_url = thumb_task.getResult().getDownloadUrl().toString();
 
-                                    if (thumb_task.isSuccessful()) {
+                                if (thumb_task.isSuccessful()) {
 
-                                        String date = DateFormat.getDateTimeInstance().format(new Date());
+                                    String date = DateFormat.getDateTimeInstance().format(new Date());
 
-                                        Map messageMap = new HashMap();
-                                        messageMap.put("message", download_url);
-                                        messageMap.put("seen", false);
-                                        messageMap.put("type", "image");
-                                        messageMap.put("time", date);
-                                        messageMap.put("from", mCurrentUserId);
-                                        messageMap.put("sms_id", push_id);
-                                        messageMap.put("isDelete", "false");
-                                        messageMap.put("position", -1);
+                                    Map messageMap = new HashMap();
+                                    messageMap.put("message", download_url);
+                                    messageMap.put("seen", false);
+                                    messageMap.put("type", "image");
+                                    messageMap.put("time", date);
+                                    messageMap.put("from", mCurrentUserId);
+                                    messageMap.put("sms_id", push_id);
+                                    messageMap.put("isDelete", "false");
+                                    messageMap.put("position", -1);
 
-                                        Map messageUserMap = new HashMap();
-                                        messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
-                                        messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
+                                    Map messageUserMap = new HashMap();
+                                    messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
+                                    messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
 
-                                        emojiconEditText.setText("");
+                                    emojiconEditText.setText("");
 
-                                        mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
-                                        mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
+//                                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
+//                                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
+//
+//                                    mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
+//                                    mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
 
-                                        mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
-                                        mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
+                                    mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
+                                        @Override
+                                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                                        mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
-                                            @Override
-                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                            if (databaseError != null) {
 
-                                                if (databaseError != null) {
+                                                mProgressBar.dismiss();
+                                                Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_LONG).show();
+                                                Log.d("CHAT_LOG", databaseError.getMessage().toString());
 
-                                                    mProgressBar.dismiss();
-                                                    Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_LONG).show();
-                                                    Log.d("CHAT_LOG", databaseError.getMessage().toString());
-
-                                                } else {
-                                                    mProgressBar.dismiss();
-                                                    Toast.makeText(ChatActivity.this, "Image is send", Toast.LENGTH_LONG).show();
-                                                }
-
+                                            } else {
+                                                mProgressBar.dismiss();
+                                                Toast.makeText(ChatActivity.this, "Image is send", Toast.LENGTH_LONG).show();
                                             }
-                                        });
 
-                                    } else{
+                                        }
+                                    });
 
-                                    }
+                                    mRootRefUser.child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            String name = dataSnapshot.child("Name").getValue().toString();
+
+                                            final Map user = new HashMap();
+                                            user.put("name", name);
+                                            user.put("seen", false);
+                                            user.put("timestamp", ServerValue.TIMESTAMP);
+
+                                            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                    if (task.isSuccessful()) {
+
+                                                    }
+                                                }
+                                            });
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                    mRootRefUser.child(mChatUser).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            String name1 = dataSnapshot.child("Name").getValue().toString();
+
+                                            final Map user1 = new HashMap();
+                                            user1.put("name", name1);
+                                            user1.put("seen", false);
+                                            user1.put("timestamp", ServerValue.TIMESTAMP);
+
+                                            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                    if (task.isSuccessful()) {
+
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+
+                                } else{
+
+                                }
                                 }
                             });
                         }
@@ -601,11 +727,11 @@ public class ChatActivity extends AppCompatActivity {
 
             emojiconEditText.setText("");
 
-            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
-            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
-
-            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
-            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
+//            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
+//            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
+//
+//            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
+//            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
 
             mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
                 @Override
@@ -616,6 +742,61 @@ public class ChatActivity extends AppCompatActivity {
                         Log.d("CHAT_LOG", databaseError.getMessage().toString());
 
                     }
+
+                }
+            });
+
+            mRootRefUser.child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String name = dataSnapshot.child("Name").getValue().toString();
+
+                    final Map user = new HashMap();
+                    user.put("name", name);
+                    user.put("seen", false);
+                    user.put("timestamp", ServerValue.TIMESTAMP);
+
+                    mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if (task.isSuccessful()) {
+
+                            }
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            mRootRefUser.child(mChatUser).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String name1 = dataSnapshot.child("Name").getValue().toString();
+
+                    final Map user1 = new HashMap();
+                    user1.put("name", name1);
+                    user1.put("seen", false);
+                    user1.put("timestamp", ServerValue.TIMESTAMP);
+
+                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if (task.isSuccessful()) {
+
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
             });
