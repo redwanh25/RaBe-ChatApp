@@ -90,8 +90,6 @@ public class ChatActivity extends AppCompatActivity {
     private MessageAdapter mAdapter;
 
     private ProgressDialog mProgressBar;
-    public int DELETE= 3;
-    public int COPY= 2;
 
     EmojiconEditText emojiconEditText;
     ImageView emojiImageView;
@@ -432,6 +430,15 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         else if(item.getItemId() == 1) {
+
+            if(smsType.equals("image")) {
+
+                Intent intent = new Intent(this, FullScreenImageView.class);
+                intent.setType(sms);
+                startActivity(intent);
+            }
+        }
+        else if(item.getItemId() == 2) {
             //delete message
 
             if(fromUser.equals(mCurrentUserId)){
@@ -441,15 +448,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         }
 
-        else if(item.getItemId() == 2) {
-
-            if(smsType.equals("image")) {
-
-                Intent intent = new Intent(this, FullScreenImageView.class);
-                intent.setType(sms);
-                startActivity(intent);
-            }
-        }
         return super.onContextItemSelected(item);
     }
 

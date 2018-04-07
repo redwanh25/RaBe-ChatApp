@@ -1,5 +1,6 @@
 package com.example.redwan.firebasechatapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -292,7 +293,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     }
 
                 });
-
             }
         }
     }
@@ -308,8 +308,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public CircleImageView profileImage, profileImage_pic;
         public ImageView messageImage, messageImageMe;
         public int COPY = 0;
-        public int DELETE= 1;
-        public int VIEW = 2;
+        public int VIEW = 1;
+        public int DELETE= 2;
 
 
         public MessageViewHolder(View view) {
@@ -330,8 +330,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.add(0, COPY, 0, "Copy sms");
-            menu.add(0, DELETE, 0, "Delete sms from both side");
             menu.add(0, VIEW, 0, "Image View");
+            menu.add(0, DELETE, 0, "Delete sms from both side");
         }
     }
 }
