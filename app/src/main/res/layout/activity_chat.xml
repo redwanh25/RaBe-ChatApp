@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:emojicon="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_view"
-    android:background="@drawable/rabe_wallpaper"
+    android:background="@drawable/chat_wallpaper"
     tools:context="com.example.redwan.firebasechatapp.ChatActivity">
 
     <include

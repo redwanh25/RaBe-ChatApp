@@ -20,6 +20,8 @@
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="6dp"
+        android:background="@drawable/image_border"
+        android:padding="5dp"
         app:layout_constraintStart_toEndOf="@+id/message_profile_layout_pic"
         app:layout_constraintTop_toTopOf="parent" />
 
