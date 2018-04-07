@@ -1,6 +1,7 @@
 package com.example.redwan.firebasechatapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -117,6 +118,16 @@ public class ProfileActivity extends AppCompatActivity {
                     });
 
                 }
+
+                profileImage_view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplication(), FullScreenImageView.class);
+                        intent.setType(proPic);
+                        startActivity(intent);
+                    }
+                });
+
                 if(uId.equals(userKey)) {
                     sent_cancel_button.setVisibility(View.INVISIBLE);
                     sent_cancel_button.setEnabled(false);

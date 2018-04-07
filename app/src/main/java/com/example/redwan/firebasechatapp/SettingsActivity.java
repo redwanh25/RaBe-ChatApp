@@ -99,7 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
                 String name = dataSnapshot.child("Name").getValue().toString();
                 String image = dataSnapshot.child("Image").getValue().toString();
                 String status = dataSnapshot.child("Status").getValue().toString();
-                String thumbImage = dataSnapshot.child("Thumb_image").getValue().toString();
+                final String thumbImage = dataSnapshot.child("Thumb_image").getValue().toString();
                 String v_id = dataSnapshot.child("Id").getValue().toString();
 //                String coverPicture = dataSnapshot.child("Cover_picture").getValue().toString();
 //                String thumbCover = dataSnapshot.child("Thumb_coverpic").getValue().toString();
@@ -121,6 +121,15 @@ public class SettingsActivity extends AppCompatActivity {
 //                if(!thumbCover.equals("default")) {
 //                    Picasso.with(SettingsActivity.this).load(thumbCover).placeholder(R.drawable.avater_coverpic).into(coverPic);
 //                }
+                proPic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplication(), FullScreenImageView.class);
+                        intent.setType(thumbImage);
+                        startActivity(intent);
+                    }
+                });
+
             }
 
             @Override
@@ -198,9 +207,9 @@ public class SettingsActivity extends AppCompatActivity {
 
                 File thumb_filePath = new File(resultUri.getPath());
                 Bitmap thumb_bitmap = new Compressor(this)
-                        .setMaxWidth(200)
-                        .setMaxHeight(200)
-                        .setQuality(10)
+                        .setMaxWidth(1000)
+                        .setMaxHeight(1000)
+                        .setQuality(1000)
                         .compressToBitmap(thumb_filePath);
 
                 //for uploading thumb image to database

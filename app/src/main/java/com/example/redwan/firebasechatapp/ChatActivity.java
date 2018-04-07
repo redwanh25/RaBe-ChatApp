@@ -259,6 +259,15 @@ public class ChatActivity extends AppCompatActivity {
                     chatOnlineStatus.setText(lastSeenTime);
                 }
 
+                chatProfilePic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplication(), FullScreenImageView.class);
+                        intent.setType(image);
+                        startActivity(intent);
+                    }
+                });
+
                 Picasso.with(ChatActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar_default).into(chatProfilePic, new Callback() {
                     @Override
                     public void onSuccess() {
