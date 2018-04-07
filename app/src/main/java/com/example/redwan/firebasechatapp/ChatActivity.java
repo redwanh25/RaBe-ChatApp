@@ -98,8 +98,8 @@ public class ChatActivity extends AppCompatActivity {
     View rootView;
     EmojIconActions emojIcon;
 
-    ConstraintLayout constraintLayout;
-    AnimationDrawable animationDrawable;
+//    ConstraintLayout constraintLayout;
+//    AnimationDrawable animationDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,11 +149,11 @@ public class ChatActivity extends AppCompatActivity {
         recyclerViewChat.setLayoutManager(mLinearLayout);
         recyclerViewChat.setAdapter(mAdapter);
 
-        constraintLayout = findViewById(R.id.root_view);
-        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(4500);
-        animationDrawable.setExitFadeDuration(4500);
-        animationDrawable.start();
+//        constraintLayout = findViewById(R.id.root_view);
+//        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+//        animationDrawable.setEnterFadeDuration(4500);
+//        animationDrawable.setExitFadeDuration(4500);
+//        animationDrawable.start();
 
         rootView = findViewById(R.id.root_view);
         emojiImageView = (ImageView) findViewById(R.id.emoji_btn);
