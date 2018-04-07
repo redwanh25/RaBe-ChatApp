@@ -16,8 +16,8 @@
 
     <ImageView
         android:id="@+id/message_Image_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="6dp"
         app:layout_constraintStart_toEndOf="@+id/message_profile_layout_pic"

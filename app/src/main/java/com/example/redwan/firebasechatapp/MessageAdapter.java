@@ -185,6 +185,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                         setPosition(position);
                         setFromUser(fromUser);
                         setSmsType("image");
+                        setSms(sms);
                         return false;
                     }
 
@@ -286,6 +287,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                         setPosition(position);
                         setFromUser(fromUser);
                         setSmsType("image");
+                        setSms(sms);
                         return false;
                     }
 
@@ -307,6 +309,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public ImageView messageImage, messageImageMe;
         public int COPY = 0;
         public int DELETE= 1;
+        public int VIEW = 2;
 
 
         public MessageViewHolder(View view) {
@@ -328,6 +331,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.add(0, COPY, 0, "Copy sms");
             menu.add(0, DELETE, 0, "Delete sms from both side");
+            menu.add(0, VIEW, 0, "Image View");
         }
     }
 }

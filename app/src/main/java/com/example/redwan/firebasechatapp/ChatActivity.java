@@ -440,6 +440,16 @@ public class ChatActivity extends AppCompatActivity {
                 Toast.makeText(ChatActivity.this, "You can not delete your friends sms", Toast.LENGTH_SHORT).show();
             }
         }
+
+        else if(item.getItemId() == 2) {
+
+            if(smsType.equals("image")) {
+
+                Intent intent = new Intent(this, FullScreenImageView.class);
+                intent.setType(sms);
+                startActivity(intent);
+            }
+        }
         return super.onContextItemSelected(item);
     }
 
@@ -524,9 +534,9 @@ public class ChatActivity extends AppCompatActivity {
 
                 File thumb_filePath = new File(imageUri.getPath());
                 Bitmap thumb_bitmap = new Compressor(this)
-                        .setMaxWidth(300)
-                        .setMaxHeight(200)
-                        .setQuality(500)
+                        .setMaxWidth(1000)
+                        .setMaxHeight(1000)
+                        .setQuality(1000)
                         .compressToBitmap(thumb_filePath);
 
                 //for uploading thumb image to database
