@@ -19,8 +19,8 @@ public class Blog extends AppCompatActivity {
     private NotificationFragment notificationFragment;
     private AccountFragment accountFragment;
 
-    ConstraintLayout constraintLayout;
-    AnimationDrawable animationDrawable;
+//    ConstraintLayout constraintLayout;
+//    AnimationDrawable animationDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +35,11 @@ public class Blog extends AppCompatActivity {
         accountFragment = new AccountFragment();
         replaceFragment(homeFragment);
 
-        constraintLayout = findViewById(R.id.myLayout_blog);
-        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(4500);
-        animationDrawable.setExitFadeDuration(4500);
-        animationDrawable.start();
+//        constraintLayout = findViewById(R.id.myLayout_blog);
+//        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+//        animationDrawable.setEnterFadeDuration(4500);
+//        animationDrawable.setExitFadeDuration(4500);
+//        animationDrawable.start();
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

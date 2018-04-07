@@ -6,8 +6,10 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -96,6 +98,9 @@ public class ChatActivity extends AppCompatActivity {
     View rootView;
     EmojIconActions emojIcon;
 
+    ConstraintLayout constraintLayout;
+    AnimationDrawable animationDrawable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +148,12 @@ public class ChatActivity extends AppCompatActivity {
         recyclerViewChat.setHasFixedSize(true);
         recyclerViewChat.setLayoutManager(mLinearLayout);
         recyclerViewChat.setAdapter(mAdapter);
+
+        constraintLayout = findViewById(R.id.root_view);
+        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
 
         rootView = findViewById(R.id.root_view);
         emojiImageView = (ImageView) findViewById(R.id.emoji_btn);

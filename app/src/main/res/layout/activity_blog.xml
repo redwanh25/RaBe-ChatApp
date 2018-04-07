@@ -4,9 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context="com.example.redwan.firebasechatapp.Blog">
+
+<!--
     android:background="@drawable/animation_main_file"
     android:id="@+id/myLayout_blog"
-    tools:context="com.example.redwan.firebasechatapp.Blog">
+-->
 
 <!--
     <include layout="@layout/all_toolbar"

@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference onlineDatabase;
     private FirebaseUser current;
 
-    ConstraintLayout constraintLayout;
-    AnimationDrawable animationDrawable;
+//    ConstraintLayout constraintLayout;
+//    AnimationDrawable animationDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout = findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        constraintLayout = findViewById(R.id.myLayout_main);
-        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(4500);
-        animationDrawable.setExitFadeDuration(4500);
-        animationDrawable.start();
+//        constraintLayout = findViewById(R.id.myLayout_main);
+//        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+//        animationDrawable.setEnterFadeDuration(4500);
+//        animationDrawable.setExitFadeDuration(4500);
+//        animationDrawable.start();
 
     }
 
