@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,7 +90,8 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayout;
     private MessageAdapter mAdapter;
 
-    private ProgressDialog mProgressBar;
+//    private ProgressDialog mProgressBar;
+    private ProgressBar progressBar;
 
     EmojiconEditText emojiconEditText;
     ImageView emojiImageView;
@@ -104,7 +106,8 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        mProgressBar = new ProgressDialog(this);
+  //      mProgressBar = new ProgressDialog(this);
+        progressBar = findViewById(R.id.progressBarId);
 
         mChatUser = getIntent().getStringExtra("key");
         chatWithUserName = getIntent().getStringExtra("user_name");
@@ -524,10 +527,11 @@ public class ChatActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
 
-                mProgressBar.setTitle("Sending Image");
-                mProgressBar.setMessage("Please wait while we sending the image. when will be upload will will get Toast...");
-                mProgressBar.setCanceledOnTouchOutside(false);
-                mProgressBar.show();
+//                mProgressBar.setTitle("Sending Image");
+//                mProgressBar.setMessage("Please wait while we sending the image. when will be upload will will get Toast...");
+//                mProgressBar.setCanceledOnTouchOutside(false);
+//                mProgressBar.show();
+                progressBar.setVisibility(View.VISIBLE);
 
                 Uri imageUri = result.getUri();
 
@@ -602,12 +606,14 @@ public class ChatActivity extends AppCompatActivity {
 
                                             if (databaseError != null) {
 
-                                                mProgressBar.dismiss();
+                                            //    mProgressBar.dismiss();
+                                                progressBar.setVisibility(View.INVISIBLE);
                                                 Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_LONG).show();
                                                 Log.d("CHAT_LOG", databaseError.getMessage().toString());
 
                                             } else {
-                                                mProgressBar.dismiss();
+                                            //    mProgressBar.dismiss();
+                                                progressBar.setVisibility(View.INVISIBLE);
                                                 Toast.makeText(ChatActivity.this, "Image is send", Toast.LENGTH_LONG).show();
                                             }
 
@@ -677,7 +683,8 @@ public class ChatActivity extends AppCompatActivity {
                             });
                         }
                         else{
-                            mProgressBar.dismiss();
+                          //  mProgressBar.dismiss();
+                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_LONG).show();
                         }
                     }
