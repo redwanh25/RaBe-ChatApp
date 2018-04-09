@@ -52,8 +52,8 @@ public class ChatsFragment extends Fragment {
     private String mCurrent_user_id;
 
     private View mMainView;
-    private ImageButton imageButton;
-    private EditText editTextSearch;
+//    private ImageButton imageButton;
+//    private EditText editTextSearch;
 
     public ChatsFragment() {
         // Required empty public constructor
@@ -85,111 +85,112 @@ public class ChatsFragment extends Fragment {
         mConvList.setHasFixedSize(true);
         mConvList.setLayoutManager(linearLayoutManager);
 
-        imageButton = mMainView.findViewById(R.id.imageButton_c);
-        editTextSearch = mMainView.findViewById(R.id.editText_c);
+//        imageButton = mMainView.findViewById(R.id.imageButton_c);
+//        editTextSearch = mMainView.findViewById(R.id.editText_c);
+//
+//        imageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                chatFriendSearch(editTextSearch.getText().toString());
+//            }
+//        });
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chatFriendSearch(editTextSearch.getText().toString());
-            }
-        });
         return mMainView;
     }
 
-    public void chatFriendSearch(String searchText) {
-
-        Query firebaseSearchQuery = mConvDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
-
-        FirebaseRecyclerAdapter<Conv, ConvViewHolder> firebaseConvAdapter = new FirebaseRecyclerAdapter<Conv, ConvViewHolder>(
-                Conv.class,
-                R.layout.user_single_layout_alluser,
-                ConvViewHolder.class,
-                firebaseSearchQuery
-        ) {
-            @Override
-            protected void populateViewHolder(final ConvViewHolder convViewHolder, final Conv conv, int i) {
-
-
-                final String list_user_id = getRef(i).getKey();
-
-                Query lastMessageQuery = mMessageDatabase.child(list_user_id).limitToLast(1);
-
-                lastMessageQuery.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                        String data = dataSnapshot.child("message").getValue().toString();
-                        convViewHolder.setMessage(data, conv.isSeen());
-
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-
-                mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        final String userName = dataSnapshot.child("Name").getValue().toString();
-                        String userThumb = dataSnapshot.child("Thumb_image").getValue().toString();
-
-                        if(dataSnapshot.hasChild("Online")) {
-
-                            String userOnline = dataSnapshot.child("Online").getValue().toString();
-                            convViewHolder.setUserOnline(userOnline);
-
-                        }
-
-                        convViewHolder.setName(userName);
-                        convViewHolder.setUserImage(userThumb, getContext());
-
-                        convViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-
-                                Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                chatIntent.putExtra("key", list_user_id);
-                                chatIntent.putExtra("user_name", userName);
-                                startActivity(chatIntent);
-
-                            }
-                        });
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-            }
-        };
-
-        mConvList.setAdapter(firebaseConvAdapter);
-    }
+//    public void chatFriendSearch(String searchText) {
+//
+//        Query firebaseSearchQuery = mConvDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+//
+//        FirebaseRecyclerAdapter<Conv, ConvViewHolder> firebaseConvAdapter = new FirebaseRecyclerAdapter<Conv, ConvViewHolder>(
+//                Conv.class,
+//                R.layout.user_single_layout_alluser,
+//                ConvViewHolder.class,
+//                firebaseSearchQuery
+//        ) {
+//            @Override
+//            protected void populateViewHolder(final ConvViewHolder convViewHolder, final Conv conv, int i) {
+//
+//
+//                final String list_user_id = getRef(i).getKey();
+//
+//                Query lastMessageQuery = mMessageDatabase.child(list_user_id).limitToLast(1);
+//
+//                lastMessageQuery.addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//                        String data = dataSnapshot.child("message").getValue().toString();
+//                        convViewHolder.setMessage(data, conv.isSeen());
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//
+//
+//                mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                        final String userName = dataSnapshot.child("Name").getValue().toString();
+//                        String userThumb = dataSnapshot.child("Thumb_image").getValue().toString();
+//
+//                        if(dataSnapshot.hasChild("Online")) {
+//
+//                            String userOnline = dataSnapshot.child("Online").getValue().toString();
+//                            convViewHolder.setUserOnline(userOnline);
+//
+//                        }
+//
+//                        convViewHolder.setName(userName);
+//                        convViewHolder.setUserImage(userThumb, getContext());
+//
+//                        convViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//
+//
+//                                Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+//                                chatIntent.putExtra("key", list_user_id);
+//                                chatIntent.putExtra("user_name", userName);
+//                                startActivity(chatIntent);
+//
+//                            }
+//                        });
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//
+//            }
+//        };
+//
+//        mConvList.setAdapter(firebaseConvAdapter);
+//    }
 
     @Override
     public void onStart() {

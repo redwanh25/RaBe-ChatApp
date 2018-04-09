@@ -8,16 +8,16 @@ public class Conv {
 
     public boolean seen;
     public long timestamp;
-    private String name;
+ //   private String name;
 
     public Conv(){
 
     }
 
-    public Conv(boolean seen, long timestamp, String name) {
+    public Conv(boolean seen, long timestamp) {
         this.seen = seen;
         this.timestamp = timestamp;
-        this.name = name;
+  //      this.name = name;
     }
 
     public boolean isSeen() {
@@ -36,11 +36,11 @@ public class Conv {
         this.timestamp = timestamp;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getName() {
-        return name;
-    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//    public String getName() {
+//        return name;
+//    }
 
 }

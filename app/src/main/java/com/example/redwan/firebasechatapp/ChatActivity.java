@@ -174,29 +174,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        mRootRef.child("Chat").child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
-               @Override
-               public void onDataChange(DataSnapshot dataSnapshot) {
-                   if(dataSnapshot.hasChild(mChatUser)) {
-                       mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
-                   }
-               }
-
-               @Override
-               public void onCancelled(DatabaseError databaseError) {
-
-               }
-         });
 
         loadMessages();
 
         current = FirebaseAuth.getInstance().getCurrentUser();
         onlineDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current.getUid()).child("Online");
 
-//        Thread thread = new Thread(new Runnable() {
-//            public void run() {
-
-        // for checking edited sms
+        // for checking deleted sms
 
         DatabaseReference current = FirebaseDatabase.getInstance().getReference().child("messages").child(mCurrentUserId).child(mChatUser);
         current.addValueEventListener(new ValueEventListener() {
@@ -234,17 +218,6 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
-//                try {
-//                    Thread.sleep(10000);
-//                } catch (Exception e) {
-//
-//                }
-//
-//            }
-//        });
-//
-//        thread.start();
 
         databaseReference.child("users").child(mChatUser).addValueEventListener(new ValueEventListener() {
             @Override
@@ -297,15 +270,43 @@ public class ChatActivity extends AppCompatActivity {
 
                 String message1 = emojiconEditText.getText().toString();
 
-                if(!dataSnapshot.hasChild(mChatUser) && !TextUtils.isEmpty(message1)) {
+                if(!dataSnapshot.hasChild(mChatUser)) {
+
+//                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
+
+                    Map chatAddMap = new HashMap();
+                    chatAddMap.put("seen", false);
+                    chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
+
+                    Map chatUserMap = new HashMap();
+                    chatUserMap.put("Chat/" + mCurrentUserId + "/" + mChatUser, chatAddMap);
+                    chatUserMap.put("Chat/" + mChatUser + "/" + mCurrentUserId, chatAddMap);
+
+                    mRootRef.updateChildren(chatUserMap, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                            if (databaseError != null) {
+
+                                Log.d("CHAT_LOG", databaseError.getMessage().toString());
+
+                            }
+
+                        }
+                    });
 
 //                    Map chatAddMap = new HashMap();
-//                    chatAddMap.put("seen", false);
+//                    chatAddMap.put("seen", true);
 //                    chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
+//
+//                    Map chatAddMap1 = new HashMap();
+//                    chatAddMap1.put("seen", false);
+//                    chatAddMap1.put("timestamp", ServerValue.TIMESTAMP);
 //
 //                    Map chatUserMap = new HashMap();
 //                    chatUserMap.put("Chat/" + mCurrentUserId + "/" + mChatUser, chatAddMap);
-//                    chatUserMap.put("Chat/" + mChatUser + "/" + mCurrentUserId, chatAddMap);
+//                    chatUserMap.put("Chat/" + mChatUser + "/" + mCurrentUserId, chatAddMap1);
+//
 //
 //                    mRootRef.updateChildren(chatUserMap, new DatabaseReference.CompletionListener() {
 //                        @Override
@@ -319,61 +320,6 @@ public class ChatActivity extends AppCompatActivity {
 //
 //                        }
 //                    });
-
-                    mRootRefUser.child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String name = dataSnapshot.child("Name").getValue().toString();
-
-                            final Map user = new HashMap();
-                            user.put("name", name);
-                            user.put("seen", false);
-                            user.put("timestamp", ServerValue.TIMESTAMP);
-
-                            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-
-                                    if (task.isSuccessful()) {
-
-                                    }
-                                }
-                            });
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    mRootRefUser.child(mChatUser).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String name1 = dataSnapshot.child("Name").getValue().toString();
-
-                            final Map user1 = new HashMap();
-                            user1.put("name", name1);
-                            user1.put("seen", false);
-                            user1.put("timestamp", ServerValue.TIMESTAMP);
-
-                            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-
-                                    if (task.isSuccessful()) {
-
-                                    }
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
 
                 }
 
@@ -594,11 +540,11 @@ public class ChatActivity extends AppCompatActivity {
 
                                     emojiconEditText.setText("");
 
-//                                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
-//                                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
-//
-//                                    mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
-//                                    mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
+                                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
+                                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
+
+                                    mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
+                                    mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
 
                                     mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
                                         @Override
@@ -619,62 +565,6 @@ public class ChatActivity extends AppCompatActivity {
 
                                         }
                                     });
-
-                                    mRootRefUser.child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            String name = dataSnapshot.child("Name").getValue().toString();
-
-                                            final Map user = new HashMap();
-                                            user.put("name", name);
-                                            user.put("seen", false);
-                                            user.put("timestamp", ServerValue.TIMESTAMP);
-
-                                            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-
-                                                    if (task.isSuccessful()) {
-
-                                                    }
-                                                }
-                                            });
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-
-                                    mRootRefUser.child(mChatUser).addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            String name1 = dataSnapshot.child("Name").getValue().toString();
-
-                                            final Map user1 = new HashMap();
-                                            user1.put("name", name1);
-                                            user1.put("seen", false);
-                                            user1.put("timestamp", ServerValue.TIMESTAMP);
-
-                                            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-
-                                                    if (task.isSuccessful()) {
-
-                                                    }
-                                                }
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-
 
                                 } else{
 
@@ -762,11 +652,11 @@ public class ChatActivity extends AppCompatActivity {
 
             emojiconEditText.setText("");
 
-//            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
-//            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
-//
-//            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
-//            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
+            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
+            mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("timestamp").setValue(ServerValue.TIMESTAMP);
+
+            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("seen").setValue(false);
+            mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
 
             mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
                 @Override
@@ -777,61 +667,6 @@ public class ChatActivity extends AppCompatActivity {
                         Log.d("CHAT_LOG", databaseError.getMessage().toString());
 
                     }
-
-                }
-            });
-
-            mRootRefUser.child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String name = dataSnapshot.child("Name").getValue().toString();
-
-                    final Map user = new HashMap();
-                    user.put("name", name);
-                    user.put("seen", false);
-                    user.put("timestamp", ServerValue.TIMESTAMP);
-
-                    mRootRef.child("Chat").child(mChatUser).child(mCurrentUserId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                            if (task.isSuccessful()) {
-
-                            }
-                        }
-                    });
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-            mRootRefUser.child(mChatUser).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String name1 = dataSnapshot.child("Name").getValue().toString();
-
-                    final Map user1 = new HashMap();
-                    user1.put("name", name1);
-                    user1.put("seen", false);
-                    user1.put("timestamp", ServerValue.TIMESTAMP);
-
-                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                            if (task.isSuccessful()) {
-
-                            }
-                        }
-                    });
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
 
                 }
             });
