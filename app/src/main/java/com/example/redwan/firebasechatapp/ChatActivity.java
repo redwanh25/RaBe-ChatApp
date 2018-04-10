@@ -270,30 +270,30 @@ public class ChatActivity extends AppCompatActivity {
 
                 String message1 = emojiconEditText.getText().toString();
 
-                if(!dataSnapshot.hasChild(mChatUser)) {
+                if(dataSnapshot.hasChild(mChatUser)) {
 
-//                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
+                    mRootRef.child("Chat").child(mCurrentUserId).child(mChatUser).child("seen").setValue(true);
 
-                    Map chatAddMap = new HashMap();
-                    chatAddMap.put("seen", false);
-                    chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
-
-                    Map chatUserMap = new HashMap();
-                    chatUserMap.put("Chat/" + mCurrentUserId + "/" + mChatUser, chatAddMap);
-                    chatUserMap.put("Chat/" + mChatUser + "/" + mCurrentUserId, chatAddMap);
-
-                    mRootRef.updateChildren(chatUserMap, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                            if (databaseError != null) {
-
-                                Log.d("CHAT_LOG", databaseError.getMessage().toString());
-
-                            }
-
-                        }
-                    });
+//                    Map chatAddMap = new HashMap();
+//                    chatAddMap.put("seen", false);
+//                    chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
+//
+//                    Map chatUserMap = new HashMap();
+//                    chatUserMap.put("Chat/" + mCurrentUserId + "/" + mChatUser, chatAddMap);
+//                    chatUserMap.put("Chat/" + mChatUser + "/" + mCurrentUserId, chatAddMap);
+//
+//                    mRootRef.updateChildren(chatUserMap, new DatabaseReference.CompletionListener() {
+//                        @Override
+//                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//
+//                            if (databaseError != null) {
+//
+//                                Log.d("CHAT_LOG", databaseError.getMessage().toString());
+//
+//                            }
+//
+//                        }
+//                    });
 
 //                    Map chatAddMap = new HashMap();
 //                    chatAddMap.put("seen", true);
