@@ -1,6 +1,6 @@
 # RaBe-ChatApp
 
-#It's an Android Social Application (internet connection will be needed). Connecting with database (Firebase). Users all information and activities (what he did in Real time) will be store in Database.
+## It's an Android Social Application (internet connection will be needed). Connecting with database (Firebase). Users all information and activities (what he did in Real time) will be store in Database.
 
 what feature you will get ---> Email Authentication, Sign in, Sign out, Registration, Forget password, change password, Friend request sent, Cancel friend request, Unfriend, searching feature, Status update, Offline capability, Profile picture upload, Shows user is online or __ time ago, chatting feature, sending image, sms delete, emoji sent, Full screen image view. 
 
