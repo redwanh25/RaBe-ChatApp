@@ -103,7 +103,7 @@ public class RegesterActivity extends AppCompatActivity {
 
                 String id = v_i;
                 Boolean check1 = false;
-                if(id.length() == 11) {
+                if(id.length() == 11 || id.length() == 12 || id.length() == 13) {
                     for (int i = 0; i < id.length(); i++) {
                         if(i < 3) {
                             if (!(id.charAt(i) >= '0' && id.charAt(i) <= '9')) {
@@ -129,7 +129,7 @@ public class RegesterActivity extends AppCompatActivity {
                                 break;
                             }
                         }
-                        else if(i < 11) {
+                        else if(i < 13) {
                             if (!(id.charAt(i) >= '0' && id.charAt(i) <= '9')) {
                                 check1 = true;
                                 break;
