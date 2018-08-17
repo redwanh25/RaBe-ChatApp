@@ -12,7 +12,6 @@
     tools:context="com.example.redwan.firebasechatapp.StartActivity">
 
     <ImageView
-
         android:id="@+id/imageView"
         android:layout_width="200dp"
         android:layout_height="0dp"
